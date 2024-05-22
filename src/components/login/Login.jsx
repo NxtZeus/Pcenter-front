@@ -1,51 +1,46 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import AuthContext from '../Auth/AuthProvider';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-    const { isAuthenticated, setIsAuthenticated, user, setUser } = useContext(AuthContext);
-    const [email, setEmail] = useState(''); // Cambiamos username por email
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
-    const [token, setToken] = useState(null);
 
-    const urlRegistro = 'http://127.0.0.1:8000/api/login/';
+    const navigate = useNavigate(); // Inicializa el hook useNavigate
+
+    const urlLogin = 'http://127.0.0.1:8000/api/login/';
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError(null);
+        setSuccessMessage(null);
 
-        axios.post(urlRegistro, {
-            email,
-            password
-        })
-            .then(response => {
-                if (response.status === 200) {
-                    localStorage.setItem('token', response.data.token);
-                    setUser(response.data.user);
-                    setSuccessMessage('¡Inicio de sesión exitoso!');
-                    console.log('Token:', response.data.token);
-                }
-            })
-            .catch(error => {
+        try {
+            const response = await axios.post(urlLogin, { email, password });
+
+            console.log('Response:', response);
+
+            if (response && response.status === 200 && response.data) {
+                localStorage.setItem('token', response.data.token);
+                setSuccessMessage('¡Inicio de sesión exitoso!');
+                console.log('Token:', response.data.token);
+                navigate('/'); // Redirige a la ruta raíz
+            } else {
+                setError('Respuesta inesperada del servidor');
+                console.error('Unexpected response:', response);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (error.response) {
                 setError(error.response.data.detail || 'Credenciales incorrectas');
-            });
+            } else {
+                setError('Error de red o servidor no disponible');
+            }
+        }
     };
 
-    useEffect(() => {
-        setToken(localStorage.getItem('token'));
-        if (token) {
-            setIsAuthenticated(true);
-        }
-    },[]);
-
-    if (isAuthenticated) {
-        return <Navigate to="/perfil" replace={true} />;
-    }
-    console.log('isAuthenticated:', isAuthenticated);
-    console.log('user:', user);
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <form
@@ -66,8 +61,8 @@ export default function Login() {
                     <input
                         type="email"
                         id="email"
-                        value={email}  // Usamos email en lugar de username
-                        onChange={(e) => setEmail(e.target.value)} // Actualizamos el estado de email
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required
                     />
