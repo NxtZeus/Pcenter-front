@@ -8,6 +8,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom'
+import AuthProvider from './components/Auth/AuthProvider.jsx'
+import ProtectedRoute from './components/Auth/ProtectedRoute.jsx'
+import Perfil from './components/perfil/Perfil.jsx'
 
 const router = createBrowserRouter([
   {
@@ -21,13 +24,19 @@ const router = createBrowserRouter([
   {
     path: "/registro",
     element: <Registro />,
+  },
+  {
+    path: "/perfil",
+    element: <ProtectedRoute><Perfil /></ProtectedRoute>,
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* HEADER */}
-    <RouterProvider router={router} />
-    {/* FOOTER */}
+    <AuthProvider>
+      {/* HEADER */}
+      <RouterProvider router={router} />
+      {/* FOOTER */}
+    </AuthProvider>
   </React.StrictMode>,
 )

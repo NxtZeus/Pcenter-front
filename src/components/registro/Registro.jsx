@@ -13,6 +13,7 @@ export default function Registro() {
     const [ciudad, setCiudad] = useState('');
     const [pais, setPais] = useState('');
     const [codigoPostal, setCodigoPostal] = useState('');
+    const [telefono, setTelefono] = useState('');
 
     const handleRegistro = async (e) => {
         e.preventDefault();
@@ -28,8 +29,17 @@ export default function Registro() {
 
         try {
             const response = await axios.post(urlRegistro, {
-                email,
-                password // Enviamos solo la contraseña, no es necesario confirmPassword
+                username: email,
+                email: email,
+                password: password,
+                first_name: nombre,
+                last_name: apellidos,
+                direccion: direccion,
+                ciudad: ciudad,
+                pais: pais,
+                codigo_postal: codigoPostal,
+                telefono: telefono
+
             });
 
             if (response.status === 201) { // 201 Created para registro exitoso
@@ -122,6 +132,18 @@ export default function Registro() {
                         id="codigoPostal"
                         value={codigoPostal}
                         onChange={(e) => setCodigoPostal(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        required
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="telefono" className="block text-gray-700 text-sm font-bold mb-2">Nº Teléfono:</label>
+                    <input
+                        type="text"
+                        id="telefono"
+                        value={telefono}
+                        onChange={(e) => setTelefono(e.target.value)}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required
                     />

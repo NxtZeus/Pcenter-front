@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-
+import AuthContext from '../Auth/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 export default function Login() {
+    const { setIsAuthenticated, setUser, isAuthenticated, user } = useContext(AuthContext);
     const [email, setEmail] = useState(''); // Cambiamos username por email
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+    const [token, setToken] = useState(null);
 
     const urlRegistro = 'http://127.0.0.1:8000/api/login/';
 
@@ -14,29 +17,35 @@ export default function Login() {
         e.preventDefault();
         setError(null);
 
-        try {
-            const response = await axios.post(urlRegistro, {
-                email,  // Enviamos email en lugar de username
-                password
+        axios.post(urlRegistro, {
+            email,
+            password
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    localStorage.setItem('token', response.data.token);
+                    setUser(response.data.user);
+                    setSuccessMessage('¡Inicio de sesión exitoso!');
+                    console.log('Token:', response.data.token);
+                }
+            })
+            .catch(error => {
+                setError(error.response.data.detail || 'Credenciales incorrectas');
             });
-
-            if (response.status === 200) {
-                localStorage.setItem('token', response.data.token); // Usamos pepito en lugar de token ya que tu vista devuelve 'pepito' para el token.
-                // Redirige al usuario (puedes usar useNavigate de React Router)
-                console.log('Token:', response.data.token);
-                setSuccessMessage('¡Inicio de sesión exitoso!');
-                setTimeout(() => {
-                    setSuccessMessage(null);
-                }, 3000);
-            } else {
-                setError(response.data.detail || 'Credenciales incorrectas');
-            }
-        } catch (err) {
-            // Manejo de errores (similar al original)
-            setError(err.response?.data?.detail || 'Error de conexión con el servidor');
-        }
     };
 
+    useEffect(() => {
+        setToken(localStorage.getItem('token'));
+        if (token) {
+            setIsAuthenticated();
+        }
+    },[]);
+
+    if (isAuthenticated) {
+        return <Navigate to="/perfil" replace={true} />;
+    }
+    console.log('isAuthenticated:', isAuthenticated);
+    console.log('user:', user);
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <form
