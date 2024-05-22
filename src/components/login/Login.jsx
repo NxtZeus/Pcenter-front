@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import AuthContext from '../Auth/AuthContext';
+import AuthContext from '../Auth/AuthProvider';
 import { Navigate } from 'react-router-dom';
 
 export default function Login() {
-    const { setIsAuthenticated, setUser, isAuthenticated, user } = useContext(AuthContext);
+    const { isAuthenticated, setIsAuthenticated, user, setUser } = useContext(AuthContext);
     const [email, setEmail] = useState(''); // Cambiamos username por email
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -37,7 +37,7 @@ export default function Login() {
     useEffect(() => {
         setToken(localStorage.getItem('token'));
         if (token) {
-            setIsAuthenticated();
+            setIsAuthenticated(true);
         }
     },[]);
 

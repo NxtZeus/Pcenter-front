@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import AuthContext from '../Auth/AuthContext';
+import AuthContext from '../Auth/AuthProvider';
 
 function Logout() {
   const { setIsAuthenticated, setUser } = useContext(AuthContext);

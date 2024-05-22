@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios'; // Importa axios para hacer peticiones
-import AuthContext from '../Auth/AuthContext';
+import AuthContext from '../Auth/AuthProvider';
 import Logout from '../login/Logout';
 
 function Perfil() {
@@ -8,7 +8,7 @@ function Perfil() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const token = localStorage.getItem('token');
-    
+
     useEffect(() => {
 
         const fetchUserData = async () => {

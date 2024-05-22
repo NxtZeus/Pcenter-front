@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import Login from './components/login/Login.jsx'
 import Registro from './components/registro/Registro.jsx'
 import {
   createBrowserRouter,
@@ -11,6 +10,7 @@ import {
 import AuthProvider from './components/Auth/AuthProvider.jsx'
 import ProtectedRoute from './components/Auth/ProtectedRoute.jsx'
 import Perfil from './components/perfil/Perfil.jsx'
+import Login from './components/login/Login.jsx'
 
 const router = createBrowserRouter([
   {
