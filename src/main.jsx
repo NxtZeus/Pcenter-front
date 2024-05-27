@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import Login from './components/login/Login';
 import { AuthProvider } from './components/auth/AuthContext';
+import Header from './components/header/Header.jsx';
 
 
 const router = createBrowserRouter([
@@ -18,12 +19,17 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <Login />,
+    element: 
+    <Login />,
   },
   {
     path: '/registro',
     element: <Registro />,
   },
+  {
+    path: '/contacto',
+    element: <Header />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Carrito = ({ onClose, onEliminarItem, onIncrementItem, onDecrementItem, items }) => {
     const [error, setError] = useState(null);

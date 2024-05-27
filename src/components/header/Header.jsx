@@ -1,19 +1,24 @@
-import React, { useContext, useRef, useEffect, useState } from 'react';
+import { useContext, useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart, FaSearch, FaUserCircle, FaBars } from 'react-icons/fa';
+import { RxCross1 } from "react-icons/rx";
 import logo from '../../assets/logo.webp';
 import Logout from '../login/Logout';
 import Carrito from '../carrito/Carrito';
 import { AuthContext } from '../../components/auth/AuthContext';
-import { loadCarrito, handleIncrementItem, handleDecrementItem, handleEliminarItem } from '../logic/funcCarrito';
+import { loadCarrito, handleIncrementItem, handleDecrementItem, handleEliminarItem } from '../logic/FuncCarrito';
+import axios from 'axios';
 
 function Header() {
     const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
     const [isCarritoMenuOpen, setCarritoMenuOpen] = useState(false);
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const [isCategoriasMenuOpen, setCategoriesMenuOpen] = useState(false);
+    const [categories, setCategories] = useState([]);
     const [itemsCarrito, setItemsCarrito] = useState([]);
     const profileMenuRef = useRef(null);
     const carritoMenuRef = useRef(null);
+    const categoriesMenuRef = useRef(null);
     const { isLoggedIn, logout } = useContext(AuthContext);
 
     useEffect(() => {
@@ -23,6 +28,9 @@ function Header() {
             }
             if (carritoMenuRef.current && !carritoMenuRef.current.contains(event.target)) {
                 setCarritoMenuOpen(false);
+            }
+            if (categoriesMenuRef.current && !categoriesMenuRef.current.contains(event.target)) {
+                setCategoriesMenuOpen(false);
             }
         };
 
@@ -36,32 +44,34 @@ function Header() {
         loadCarrito(setItemsCarrito, isLoggedIn);
     }, [isLoggedIn]);
 
-    console.log(localStorage.getItem('token'))
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/categorias/');
+                setCategories(response.data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+        fetchCategories();
+    }, []);
 
     const totalItems = itemsCarrito.reduce((sum, item) => sum + 1, 0);
 
     return (
         <>
-            <header className="bg-yellow-400 w-full py-4 px-4 shadow-md flex justify-between items-center flex-wrap">
+            <header className="bg-yellow-400 w-full py-4 px-4 shadow-md flex justify-between items-center flex-wrap relative z-10">
                 <div className="flex items-center w-full lg:w-auto">
-                    <img src={logo} alt="Logo de la tienda" className="h-12 md:h-16 lg:h-20 mr-4" />
+                    <Link to="/"><img src={logo} alt="Logo de la tienda" className="h-12 md:h-16 lg:h-20 mr-4" /></Link>
                     <button className="lg:hidden ml-auto" onClick={() => setMenuOpen(!isMenuOpen)}>
                         <FaBars className="text-black text-2xl" />
                     </button>
                 </div>
 
-                <div className="flex-1 flex justify-center lg:hidden">
-                    <nav className="space-x-8 text-center">
-                        <Link to="/" className="text-black hover:text-white text-lg transition duration-300">Inicio</Link>
-                        <Link to="/productos" className="text-black hover:text-white text-lg transition duration-300">Productos</Link>
-                        <Link to="/contacto" className="text-black hover:text-white text-lg transition duration-300">Contacto</Link>
-                    </nav>
-                </div>
-
                 <div className="hidden lg:flex flex-1 justify-center">
                     <nav className="space-x-8">
                         <Link to="/" className="text-black hover:text-white text-lg transition duration-300">Inicio</Link>
-                        <Link to="/productos" className="text-black hover:text-white text-lg transition duration-300">Productos</Link>
+                        <button onClick={() => setCategoriesMenuOpen(!isCategoriasMenuOpen)} className="text-black hover:text-white text-lg transition duration-300">Categorías</button>
                         <Link to="/contacto" className="text-black hover:text-white text-lg transition duration-300">Contacto</Link>
                     </nav>
                 </div>
@@ -119,11 +129,31 @@ function Header() {
                 </div>
             </header>
 
+            <div className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40 ${isCategoriasMenuOpen ? 'block' : 'hidden'}`}></div>
+
+            {isCategoriasMenuOpen && (
+                <div ref={categoriesMenuRef} className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50">
+                    <button onClick={() => setCategoriesMenuOpen(false)} className="absolute top-4 right-4 text-black text-2xl"><RxCross1 /></button>
+                    <nav className="mt-16">
+                        <h2 className="text-xl font-bold px-4">Todas las categorías</h2>
+                        <ul className="mt-4">
+                            {categories.map((categoria) => (
+                                <li key={categoria} className="border-b border-gray-200">
+                                    <Link to={`/categoria/${categoria}`} className="block px-4 py-2 text-black hover:bg-gray-300 transition duration-300">
+                                        {categoria}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            )}
+
             {isMenuOpen && (
                 <div className="bg-yellow-400 w-full py-4 px-8 shadow-md flex flex-col items-center lg:hidden">
                     <nav className="space-y-4 text-center w-full">
                         <Link to="/" className="block text-black hover:text-white text-lg transition duration-300">Inicio</Link>
-                        <Link to="/productos" className="block text-black hover:text-white text-lg transition duration-300">Productos</Link>
+                        <button onClick={() => setCategoriesMenuOpen(!isCategoriesMenuOpen)} className="block text-black hover:text-white text-lg transition duration-300">Categorías</button>
                         <Link to="/contacto" className="block text-black hover:text-white text-lg transition duration-300">Contacto</Link>
                         {isLoggedIn ? (
                             <>

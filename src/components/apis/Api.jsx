@@ -9,7 +9,7 @@ const getAuthHeaders = () => {
 
 export const fetchCarrito = async () => {
     try {
-        const response = await axios.get(`${API_URL}ver_carrito/`, getAuthHeaders());
+        const response = await axios.get(`${API_URL}ver-carrito/`, getAuthHeaders());
         return response.data;
     } catch (error) {
         throw error;
@@ -18,7 +18,7 @@ export const fetchCarrito = async () => {
 
 export const updateCarritoItem = async (productoId, cantidad) => {
     try {
-        await axios.patch(`${API_URL}actualizar_carrito/`, {
+        await axios.patch(`${API_URL}actualizar-carrito/`, {
             producto_id: productoId,
             cantidad
         }, getAuthHeaders());

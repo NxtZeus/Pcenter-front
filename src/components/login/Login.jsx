@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../components/auth/AuthContext';
+import Header from '../header/Header';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ export default function Login() {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const { login } = useContext(AuthContext);
-    const navigate = useNavigate(); // Inicializa el hook useNavigate
+    const navigate = useNavigate();
 
     const urlLogin = 'http://127.0.0.1:8000/api/login/';
 
@@ -25,9 +26,9 @@ export default function Login() {
             });
 
             if (response && response.status === 200 && response.data) {
-                login(response.data.token); // Llama a la función login del contexto
+                login(response.data.token);
                 setSuccessMessage('¡Inicio de sesión exitoso!');
-                navigate('/'); // Redirige a la ruta raíz
+                navigate('/');
             } else {
                 setError('Respuesta inesperada del servidor');
             }
@@ -41,58 +42,60 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <form
-                onSubmit={handleLogin}
-                className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
-            >
-                <h2 className="text-2xl font-bold mb-4 text-center">Iniciar Sesión</h2>
-                {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-                {successMessage && <p className="text-green-500 text-sm mb-2">{successMessage}</p>}
-
-                <div className="mb-4">
-                    <label
-                        htmlFor="email"
-                        className="block text-gray-700 text-sm font-bold mb-2"
-                    >
-                        Email:
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+            <div className="bg-gradient-to-r from-black to-yellow-500 rounded-[26px] m-4 w-full max-w-lg">
+                <div className="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-8 md:p-12 m-2">
+                    <h1 className="pt-8 pb-6 font-bold text-5xl text-center">Iniciar Sesión</h1>
+                    <form onSubmit={handleLogin} className="space-y-6">
+                        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                        {successMessage && <p className="text-green-500 text-sm mb-4">{successMessage}</p>}
+                        
+                        <div>
+                            <label htmlFor="email" className="block mb-2 text-lg">Email</label>
+                            <input
+                                id="email"
+                                className="border p-4 shadow-md border-gray-300 rounded-lg w-full"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password" className="block mb-2 text-lg">Contraseña</label>
+                            <input
+                                id="password"
+                                className="border p-4 shadow-md border-gray-300 rounded-lg w-full"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button
+                            className="bg-gradient-to-r from-black to-yellow-500 shadow-lg mt-8 p-4 text-white rounded-lg w-full hover:scale-105 hover:from-yellow-500 hover:to-black transition duration-300 ease-in-out"
+                            type="submit"
+                        >
+                            Iniciar Sesión
+                        </button>
+                    </form>
+                    <div className="flex flex-col mt-6 items-center justify-center text-lg">
+                        <h3>
+                            <span className="cursor-default">¿No tienes una cuenta?</span>
+                            <a
+                                className="group text-yellow-400 transition-all duration-100 ease-in-out"
+                                href="/registro"
+                            >
+                                <span
+                                    className="bg-left-bottom ml-1 bg-gradient-to-r from-yellow-400 to-yellow-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+                                >
+                                    Regístrate
+                                </span>
+                            </a>
+                        </h3>
+                    </div>
                 </div>
-
-                <div className="mb-6">
-                    <label
-                        htmlFor="password"
-                        className="block text-gray-700 text-sm font-bold mb-2"
-                    >
-                        Contraseña:
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="flex items-center justify-center">
-                    <button
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Iniciar Sesión
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     );
 }

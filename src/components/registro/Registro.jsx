@@ -4,7 +4,7 @@ import axios from 'axios';
 export default function Registro() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // Campo para confirmar contraseña
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const [nombre, setNombre] = useState('');
@@ -19,7 +19,6 @@ export default function Registro() {
         e.preventDefault();
         setError(null);
 
-        // Validación básica de contraseñas
         if (password !== confirmPassword) {
             setError('Las contraseñas no coinciden');
             return;
@@ -39,15 +38,13 @@ export default function Registro() {
                 pais: pais,
                 codigo_postal: codigoPostal,
                 telefono: telefono
-
             });
 
-            if (response.status === 201) { // 201 Created para registro exitoso
+            if (response.status === 201) {
                 setSuccessMessage('¡Registro exitoso!');
                 setTimeout(() => {
                     setSuccessMessage(null);
                 }, 3000);
-                // Aquí podrías redirigir al usuario a la página de inicio de sesión
             } else {
                 setError(response.data.detail || 'Error al registrar usuario');
             }
@@ -57,148 +54,167 @@ export default function Registro() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <form
-                onSubmit={handleRegistro}
-                className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
-            >
-                <h2 className="text-2xl font-bold mb-4 text-center">Registro</h2>
-                {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-                {successMessage && <p className="text-green-500 text-sm mb-2">{successMessage}</p>}
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+            <div className="bg-gradient-to-r from-black to-yellow-500 rounded-[26px] m-4 w-full max-w-4xl">
+                <div className="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-6 md:p-10 m-2">
+                    <h1 className="pt-8 pb-6 font-bold text-5xl text-center">Registrarse</h1>
+                    <form onSubmit={handleRegistro} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {error && <p className="text-red-500 text-sm mb-2 col-span-1 md:col-span-2">{error}</p>}
+                        {successMessage && <p className="text-green-500 text-sm mb-2 col-span-1 md:col-span-2">{successMessage}</p>}
+                        
+                        <div>
+                            <label htmlFor="nombre" className="block mb-2 text-lg">Nombre</label>
+                            <input
+                                id="nombre"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="text"
+                                value={nombre}
+                                onChange={(e) => setNombre(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="apellidos" className="block mb-2 text-lg">Apellidos</label>
+                            <input
+                                id="apellidos"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="text"
+                                value={apellidos}
+                                onChange={(e) => setApellidos(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="direccion" className="block mb-2 text-lg">Dirección</label>
+                            <input
+                                id="direccion"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="text"
+                                value={direccion}
+                                onChange={(e) => setDireccion(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="ciudad" className="block mb-2 text-lg">Ciudad</label>
+                            <input
+                                id="ciudad"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="text"
+                                value={ciudad}
+                                onChange={(e) => setCiudad(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="pais" className="block mb-2 text-lg">País</label>
+                            <input
+                                id="pais"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="text"
+                                value={pais}
+                                onChange={(e) => setPais(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="codigoPostal" className="block mb-2 text-lg">Código Postal</label>
+                            <input
+                                id="codigoPostal"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="text"
+                                value={codigoPostal}
+                                onChange={(e) => setCodigoPostal(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="telefono" className="block mb-2 text-lg">Nº Teléfono</label>
+                            <input
+                                id="telefono"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="text"
+                                value={telefono}
+                                onChange={(e) => setTelefono(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="email" className="block mb-2 text-lg">Email</label>
+                            <input
+                                id="email"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password" className="block mb-2 text-lg">Contraseña</label>
+                            <input
+                                id="password"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="confirmPassword" className="block mb-2 text-lg">Confirmar Contraseña</label>
+                            <input
+                                id="confirmPassword"
+                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-span-1 md:col-span-2">
+                            <button
+                                className="bg-gradient-to-r from-black to-yellow-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-yellow-500 hover:to-black transition duration-300 ease-in-out"
+                                type="submit"
+                            >
+                                REGISTRARSE
+                            </button>
+                        </div>
+                    </form>
+                    <div className="flex flex-col mt-4 items-center justify-center text-sm col-span-1 md:col-span-2">
+                        <h3>
+                            <span className="cursor-default">¿Ya tienes una cuenta?</span>
+                            <a
+                                className="group text-yellow-400 transition-all duration-100 ease-in-out"
+                                href="/login"
+                            >
+                                <span
+                                    className="bg-left-bottom ml-1 bg-gradient-to-r from-yellow-400 to-yellow-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+                                >
+                                    Iniciar Sesión
+                                </span>
+                            </a>
+                        </h3>
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="nombre" className="block text-gray-700 text-sm font-bold mb-2">Nombre:</label>
-                    <input
-                        type="text"
-                        id="nombre"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
+                    <div className="text-gray-500 flex text-center flex-col mt-4 items-center text-sm col-span-1 md:col-span-2">
+                        <p className="cursor-default">
+                            Al registrarte, aceptas nuestros
+                            <a className="group text-yellow-400 transition-all duration-100 ease-in-out" href="#">
+                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-yellow-400 to-yellow-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                                    Términos
+                                </span>
+                            </a>
+                            y
+                            <a className="group text-yellow-400 transition-all duration-100 ease-in-out" href="#">
+                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-yellow-400 to-yellow-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                                    Política de Privacidad
+                                </span>
+                            </a>
+                        </p>
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="apellidos" className="block text-gray-700 text-sm font-bold mb-2">Apellidos:</label>
-                    <input
-                        type="text"
-                        id="apellidos"
-                        value={apellidos}
-                        onChange={(e) => setApellidos(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="direccion" className="block text-gray-700 text-sm font-bold mb-2">Dirección:</label>
-                    <input
-                        type="text"
-                        id="direccion"
-                        value={direccion}
-                        onChange={(e) => setDireccion(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="ciudad" className="block text-gray-700 text-sm font-bold mb-2">Ciudad:</label>
-                    <input
-                        type="text"
-                        id="ciudad"
-                        value={ciudad}
-                        onChange={(e) => setCiudad(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="pais" className="block text-gray-700 text-sm font-bold mb-2">País:</label>
-                    <input
-                        type="text"
-                        id="pais"
-                        value={pais}
-                        onChange={(e) => setPais(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="codigoPostal" className="block text-gray-700 text-sm font-bold mb-2">Código Postal:</label>
-                    <input
-                        type="text"
-                        id="codigoPostal"
-                        value={codigoPostal}
-                        onChange={(e) => setCodigoPostal(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="telefono" className="block text-gray-700 text-sm font-bold mb-2">Nº Teléfono:</label>
-                    <input
-                        type="text"
-                        id="telefono"
-                        value={telefono}
-                        onChange={(e) => setTelefono(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
-                        Email:
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-6">
-                    <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Contraseña:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="mb-6">
-                    <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-bold mb-2">
-                        Confirmar Contraseña:
-                    </label>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                    />
-                </div>
-
-                <div className="flex items-center justify-center">
-                    <button
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Registrarse
-                    </button>
-                </div>
-
-            </form>
+            </div>
         </div>
     );
 }
