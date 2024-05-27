@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../components/auth/AuthContext';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
-
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate(); // Inicializa el hook useNavigate
 
     const urlLogin = 'http://127.0.0.1:8000/api/login/';
@@ -18,21 +19,19 @@ export default function Login() {
         setSuccessMessage(null);
 
         try {
-            const response = await axios.post(urlLogin, { email, password });
-
-            console.log('Response:', response);
+            const response = await axios.post(urlLogin, { 
+                email, 
+                password 
+            });
 
             if (response && response.status === 200 && response.data) {
-                localStorage.setItem('token', response.data.token);
+                login(response.data.token); // Llama a la función login del contexto
                 setSuccessMessage('¡Inicio de sesión exitoso!');
-                console.log('Token:', response.data.token);
                 navigate('/'); // Redirige a la ruta raíz
             } else {
                 setError('Respuesta inesperada del servidor');
-                console.error('Unexpected response:', response);
             }
         } catch (error) {
-            console.error('Error:', error);
             if (error.response) {
                 setError(error.response.data.detail || 'Credenciales incorrectas');
             } else {

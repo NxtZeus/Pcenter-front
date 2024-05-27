@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../../components/auth/AuthContext';
 
 function Logout() {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+    const { logout } = useContext(AuthContext);
     const urlLogout = 'http://127.0.0.1:8000/api/logout/';
 
     const handleLogout = async () => {
@@ -24,7 +26,7 @@ function Logout() {
             });
 
             if (response.status === 200) {
-                localStorage.removeItem('token');
+                logout(); // Llama a la función logout del contexto
                 setSuccessMessage('¡Cierre de sesión exitoso!'); // Mensaje de éxito
                 console.log('Token eliminado:', token);
             } else {
@@ -45,11 +47,9 @@ function Logout() {
     };
 
     return (
-        <div>
-            <button onClick={handleLogout}>Cerrar Sesión</button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-        </div>
+        <button onClick={handleLogout} className="block w-full px-4 py-2 text-left text-black hover:bg-gray-200">
+            Cerrar sesión
+        </button>
     );
 }
 
