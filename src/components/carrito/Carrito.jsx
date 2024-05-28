@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import TruncatedText from '../truncarTexto/TruncarTexto';
 
 const Carrito = ({ onClose, onEliminarItem, onIncrementItem, onDecrementItem, items }) => {
     const [error, setError] = useState(null);
@@ -18,8 +19,8 @@ const Carrito = ({ onClose, onEliminarItem, onIncrementItem, onDecrementItem, it
                         <div className="flex items-center space-x-2 flex-1">
                             <img src={item.producto.imagen} alt={item.producto.nombre_producto} className="w-12 h-12 object-cover rounded-md" />
                             <div className="flex-1">
-                                <p className="whitespace-normal sm:whitespace-nowrap">{item.producto.nombre_producto}</p>
-                                <p className="text-sm text-gray-600">${item.producto.precio} x {item.cantidad}</p>
+                                <p className="whitespace-normal sm:whitespace-nowrap"><TruncatedText text={item.producto.nombre_producto} maxLength={40} /></p>
+                                <p className="text-sm text-gray-600">{item.producto.precio}€ x {item.cantidad}</p>
                             </div>
                         </div>
                         <div className="flex items-center space-x-2">

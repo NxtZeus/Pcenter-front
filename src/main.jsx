@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import Login from './components/login/Login';
 import { AuthProvider } from './components/auth/AuthContext';
-import Header from './components/header/Header.jsx';
+import Header from './components/Header.jsx';
 
 
 const router = createBrowserRouter([
