@@ -60,12 +60,11 @@ function Header() {
 
     return (
         <>
-            <header className="bg-yellow-400 w-full py-4 px-4 shadow-md flex justify-between items-center flex-wrap relative z-10">
-                <div className="flex items-center w-full lg:w-auto">
-                    <Link to="/"><img src={logo} alt="Logo de la tienda" className="h-12 md:h-16 lg:h-20 mr-4" /></Link>
-                    <button className="lg:hidden ml-auto" onClick={() => setMenuOpen(!isMenuOpen)}>
-                        <FaBars className="text-black text-2xl" />
-                    </button>
+            <header className="bg-yellow-400 w-full py-2 sm:py-4 px-4 shadow-md flex justify-between items-center relative z-10">
+                <div className="flex items-center">
+                    <Link to="/">
+                        <img src={logo} alt="Logo de la tienda" className="h-8 sm:h-12 md:h-16 lg:h-20 mr-4" />
+                    </Link>
                 </div>
 
                 <div className="hidden lg:flex flex-1 justify-center">
@@ -76,16 +75,16 @@ function Header() {
                     </nav>
                 </div>
 
-                <div className="flex items-center space-x-4 lg:space-x-8">
-                    <div className="relative flex-1 lg:flex-none lg:ml-4">
-                        <input type="text" placeholder="Buscar..." className="px-4 py-2 rounded-md w-full lg:w-auto" />
-                        <FaSearch className="absolute right-2 top-2 text-black" />
+                <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-8 ml-auto">
+                    <div className="relative">
+                        <input type="text" placeholder="Buscar..." className="px-2 py-1 rounded-md w-24 sm:px-4 sm:py-2 sm:w-32 lg:w-auto" />
+                        <FaSearch className="absolute right-1 top-1 sm:right-2 sm:top-2 text-black" />
                     </div>
                     {isLoggedIn ? (
                         <>
-                            <div className="relative">
-                                <button onClick={() => setCarritoMenuOpen(!isCarritoMenuOpen)} className="relative ml-4 lg:ml-0">
-                                    <FaShoppingCart className="text-black text-2xl" />
+                            <div className="flex items-center">
+                                <button onClick={() => setCarritoMenuOpen(!isCarritoMenuOpen)} className="relative">
+                                    <FaShoppingCart className="text-black text-xl sm:text-2xl" />
                                     {totalItems > 0 && (
                                         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                             {totalItems}
@@ -104,16 +103,18 @@ function Header() {
                                     </div>
                                 )}
                             </div>
-                            <div className="relative">
-                                <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} className="relative ml-4 lg:ml-0">
-                                    <FaUserCircle className="text-black text-2xl" />
+                            <div className="flex items-center">
+                                <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} className="relative">
+                                    <FaUserCircle className="text-black text-xl sm:text-2xl" />
                                 </button>
                                 {isProfileMenuOpen && (
-                                    <div ref={profileMenuRef} className="absolute right-0 mt-2 mr-2 w-48 bg-white rounded-md shadow-lg py-2">
+                                    <div ref={profileMenuRef} className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl shadow-yellow-500 py-2 border border-black border-opacity-40 transform translate-y-full">
                                         <Link to="/perfil" className="block px-4 py-2 text-black hover:bg-gray-200">Mi cuenta</Link>
                                         <Logout onLogout={logout} />
                                     </div>
                                 )}
+
+
                             </div>
                         </>
                     ) : (
@@ -127,12 +128,16 @@ function Header() {
                         </>
                     )}
                 </div>
+
+                <button className="lg:hidden ml-auto" onClick={() => setMenuOpen(!isMenuOpen)}>
+                    <FaBars className="text-black text-xl sm:text-2xl" />
+                </button>
             </header>
 
             <div className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40 ${isCategoriasMenuOpen ? 'block' : 'hidden'}`}></div>
 
             {isCategoriasMenuOpen && (
-                <div ref={categoriesMenuRef} className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50">
+                <div ref={categoriesMenuRef} className="fixed top-0 left-0 lg:w-64 sm:w-48 h-full bg-white shadow-lg z-50">
                     <button onClick={() => setCategoriesMenuOpen(false)} className="absolute top-4 right-4 text-black text-2xl"><RxCross1 /></button>
                     <nav className="mt-16">
                         <h2 className="text-xl font-bold px-4">Todas las categorías</h2>
@@ -150,28 +155,24 @@ function Header() {
             )}
 
             {isMenuOpen && (
-                <div className="bg-yellow-400 w-full py-4 px-8 shadow-md flex flex-col items-center lg:hidden">
-                    <nav className="space-y-4 text-center w-full">
-                        <Link to="/" className="block text-black hover:text-white text-lg transition duration-300">Inicio</Link>
-                        <button onClick={() => setCategoriesMenuOpen(!isCategoriesMenuOpen)} className="block text-black hover:text-white text-lg transition duration-300">Categorías</button>
-                        <Link to="/contacto" className="block text-black hover:text-white text-lg transition duration-300">Contacto</Link>
-                        {isLoggedIn ? (
-                            <>
-                                <Link to="/carrito" className="block text-black hover:text-white text-lg transition duration-300">Carrito</Link>
-                                <Link to="/perfil" className="block text-black hover:text-white text-lg transition duración-300">Perfil</Link>
-                            </>
-                        ) : (
-                            <>
-                                <Link to="/login" className="block bg-black text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duración-300 mt-4 lg:mt-0 lg:ml-4">
-                                    Iniciar Sesión
-                                </Link>
-                                <Link to="/registro" className="block bg-white text-black px-4 py-2 rounded-md hover:bg-gray-300 transition duración-300 mt-4 lg:mt-0 lg:ml-4">
-                                    Registrarse
-                                </Link>
-                            </>
-                        )}
-                    </nav>
-                </div>
+                <nav className="bg-yellow-400 w-full py-4 px-8 shadow-md flex flex-col items-center lg:hidden space-y-4">
+                    <Link to="/" className="block text-black hover:text-white text-lg transition duration-300">Inicio</Link>
+                    <button onClick={() => setCategoriesMenuOpen(!isCategoriasMenuOpen)} className="block text-black hover:text-white text-lg transition duration-300">Categorías</button>
+                    <Link to="/contacto" className="block text-black hover:text-white text-lg transition duration-300">Contacto</Link>
+                    {isLoggedIn ? (
+                        <>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login" className="block bg-black text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duración-300 mt-4 lg:mt-0 lg:ml-4">
+                                Iniciar Sesión
+                            </Link>
+                            <Link to="/registro" className="block bg-white text-black px-4 py-2 rounded-md hover:bg-gray-300 transition duración-300 mt-4 lg:mt-0 lg:ml-4">
+                                Registrarse
+                            </Link>
+                        </>
+                    )}
+                </nav>
             )}
         </>
     );
