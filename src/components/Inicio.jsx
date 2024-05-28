@@ -3,6 +3,7 @@ import { fetchProductos } from '../components/apis/Api';
 import ProductCard from './productCards/ProductCards';
 import { agregarItemAlCarrito, loadCarrito } from '../components/logic/FuncCarrito';
 import { AuthContext } from '../components/auth/AuthContext';
+import banner from '../assets/iphone.jpg';
 
 function Inicio() {
     const [productos, setProductos] = useState([]);
@@ -42,9 +43,10 @@ function Inicio() {
     }
 
     return (
-        <div className="container mx-auto mt-8">
-            <h1 className="text-2xl font-bold mb-4">Productos Destacados</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="container mx-auto mt-8 mb-8">
+            <img src={banner} className='w-full'/>
+            <h1 className="mt-20 text-2xl font-bold mb-8">Productos Destacados</h1>
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center">
                 {productos.map((producto) => (
                     <ProductCard key={producto.id} producto={producto} onAddToCart={manejarAgregarAlCarrito} />
                 ))}

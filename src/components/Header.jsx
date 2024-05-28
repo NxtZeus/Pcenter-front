@@ -62,7 +62,7 @@ function Header() {
 
     return (
         <>
-            <header className="bg-custom-green w-full py-2 sm:py-4 px-4 shadow-md flex justify-between items-center relative z-10">
+            <header className="bg-custom-azul w-full py-2 sm:py-4 px-4 shadow-md flex justify-between items-center relative z-10">
                 <div className="flex items-center">
                     <Link to="/">
                         <img src={logo} alt="Logo de la tienda" className="h-8 sm:h-12 md:h-16 lg:h-20 mr-4" />
@@ -70,17 +70,17 @@ function Header() {
                 </div>
 
                 <div className="hidden lg:flex flex-1 justify-center">
-                    <nav className="space-x-8">
-                        <Link to="/" className="text-white hover:text-black text-lg transition duration-300">Inicio</Link>
-                        <button onClick={() => setCategoriesMenuOpen(!isCategoriasMenuOpen)} className="text-white text-lg transition duration-300">Categorías</button>
-                        <Link to="/contacto" className="text-white text-lg transition duration-300">Contacto</Link>
+                    <nav className="space-x-16">
+                        <Link to="/" className="text-white hover:text-custom-naranja text-xl transition duration-300">Inicio</Link>
+                        <button onClick={() => setCategoriesMenuOpen(!isCategoriasMenuOpen)} className="text-white text-xl hover:text-custom-naranja transition duration-300">Categorías</button>
+                        <Link to="/contacto" className="text-white hover:text-custom-naranja text-xl transition duration-300">Contacto</Link>
                     </nav>
                 </div>
 
-                <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-8 ml-auto">
+                <div className="flex items-center space-x-4 sm:space-x-6 lg:space-x-8 ml-auto">
                     <div className="relative">
-                        <input type="text" placeholder="Buscar..." className="px-2 py-1 rounded-md w-24 sm:px-4 sm:py-2 sm:w-32 lg:w-auto" />
-                        <FaSearch className="absolute right-1 top-1 sm:right-2 sm:top-2 text-black" />
+                        <input type="text" placeholder="Buscar..." className="px-2 py-1 rounded-md w-32 sm:px-4 sm:py-2 sm:w-80 lg:w-96" />
+                        <FaSearch className="absolute right-1 top-2 sm:right-2 sm:top-2 text-black" />
                     </div>
                     {isLoggedIn ? (
                         <>
@@ -105,17 +105,15 @@ function Header() {
                                     </div>
                                 )}
                             </div>
-                            <div className="flex items-center">
-                                <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} className="relative">
-                                    <FaUserCircle className="text-white text-xl sm:text-2xl" />
-                                </button>
-                                {isProfileMenuOpen && (
-                                    <div ref={profileMenuRef} className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl shadow-yellow-500 py-2 border border-black border-opacity-40 transform translate-y-full">
-                                        <Link to="/perfil" className="block px-4 py-2 text-black hover:bg-gray-200">Mi cuenta</Link>
-                                        <Logout onLogout={logout} />
-                                    </div>
-                                )}
-                            </div>
+                            <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} className="relative">
+                                <FaUserCircle className="text-white text-xl sm:text-2xl" />
+                            </button>
+                            {isProfileMenuOpen && (
+                                <div ref={profileMenuRef} className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl shadow-custom-azul py-2 border border-black border-opacity-40 transform translate-y-full">
+                                    <Link to="/perfil" className="block px-4 py-2 text-black hover:bg-gray-200">Mi cuenta</Link>
+                                    <Logout onLogout={logout} />
+                                </div>
+                            )}
                         </>
                     ) : (
                         <>
@@ -127,23 +125,24 @@ function Header() {
                             </Link>
                         </>
                     )}
-                </div>
 
-                <button className="lg:hidden ml-auto" onClick={() => setMenuOpen(!isMenuOpen)}>
-                    <FaBars className="text-white text-xl sm:text-2xl" />
-                </button>
+                    <button className="lg:hidden ml-auto" onClick={() => setMenuOpen(!isMenuOpen)}>
+                        <FaBars className="text-white text-xl sm:text-2xl" />
+                    </button>
+                </div>
             </header>
 
             <div className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-40 ${isCategoriasMenuOpen ? 'block' : 'hidden'}`}></div>
 
-            <div ref={categoriesMenuRef} className={`fixed top-0 left-0 lg:w-64 sm:w-48 h-full bg-white shadow-lg z-50 transition-transform transform ease-in-out duration-300 ${isCategoriasMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                <button onClick={() => setCategoriesMenuOpen(false)} className="absolute top-4 right-4 text-black text-2xl"><RxCross1 /></button>
-                <nav className="mt-16">
-                    <h2 className="text-xl font-bold px-4">Todas las categorías</h2>
+            <div ref={categoriesMenuRef} className={`fixed top-0 left-0 lg:w-80 sm:w-64 h-full bg-custom-azul bg-opacity-70 shadow-lg z-50 transition-transform transform ease-in-out duration-300 ${isCategoriasMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                <button onClick={() => setCategoriesMenuOpen(false)} className="absolute top-4 right-4 text-black text-2xl"><RxCross1 className='text-white' /></button>
+                <nav>
+                    <img src={logo} alt="Logo de la tienda" className="h-8 sm:h-12 md:h-16 lg:h-20 mt-4 ml-4" />
+                    <h2 className="text-xl text-white font-bold px-4 mt-16">Todas las categorías</h2>
                     <ul className="mt-4">
                         {categorias.map((categoria) => (
                             <li key={categoria} className="border-b border-gray-200">
-                                <Link to={`/categoria/${categoria}`} className="block px-4 py-2 text-black hover:bg-gray-300 transition duration-300">
+                                <Link to={`/categoria/${categoria}`} className="block px-4 py-2 text-white hover:bg-gray-300 transition duration-300">
                                     {categoria}
                                 </Link>
                             </li>
@@ -153,10 +152,10 @@ function Header() {
             </div>
 
             {isMenuOpen && (
-                <nav className="bg-yellow-400 w-full py-4 px-8 shadow-md flex flex-col items-center lg:hidden space-y-4">
-                    <Link to="/" className="block text-black hover:text-white text-lg transition duration-300">Inicio</Link>
-                    <button onClick={() => setCategoriesMenuOpen(!isCategoriasMenuOpen)} className="block text-black hover:text-white text-lg transition duration-300">Categorías</button>
-                    <Link to="/contacto" className="block text-black hover:text-white text-lg transition duration-300">Contacto</Link>
+                <nav className="bg-custom-azul w-full py-4 px-8 shadow-md flex flex-col items-center lg:hidden space-y-4">
+                    <Link to="/" className="block text-white hover:text-custom-naranja text-lg transition duration-300">Inicio</Link>
+                    <button onClick={() => setCategoriesMenuOpen(!isCategoriasMenuOpen)} className="block text-white hover:text-custom-naranja text-lg transition duration-300">Categorías</button>
+                    <Link to="/contacto" className="block text-white hover:text-custom-naranja text-lg transition duration-300">Contacto</Link>
                     {isLoggedIn ? (
                         <>
                         </>

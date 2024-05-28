@@ -55,9 +55,9 @@ export default function Registro() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-            <div className="bg-gradient-to-r from-black to-yellow-500 rounded-[26px] m-4 w-full max-w-4xl">
+            <div className="bg-gradient-to-r from-black to-custom-azul rounded-[26px] m-4 w-full max-w-4xl">
                 <div className="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-6 md:p-10 m-2">
-                    <h1 className="pt-8 pb-6 font-bold text-5xl text-center">Registrarse</h1>
+                    <h1 className="pt-8 pb-6 text-custom-azul font-bold text-5xl text-center">Registrarse</h1>
                     <form onSubmit={handleRegistro} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {error && <p className="text-red-500 text-sm mb-2 col-span-1 md:col-span-2">{error}</p>}
                         {successMessage && <p className="text-green-500 text-sm mb-2 col-span-1 md:col-span-2">{successMessage}</p>}
@@ -66,7 +66,7 @@ export default function Registro() {
                             <label htmlFor="nombre" className="block mb-2 text-lg">Nombre</label>
                             <input
                                 id="nombre"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
@@ -77,7 +77,7 @@ export default function Registro() {
                             <label htmlFor="apellidos" className="block mb-2 text-lg">Apellidos</label>
                             <input
                                 id="apellidos"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
                                 value={apellidos}
                                 onChange={(e) => setApellidos(e.target.value)}
@@ -88,7 +88,7 @@ export default function Registro() {
                             <label htmlFor="direccion" className="block mb-2 text-lg">Dirección</label>
                             <input
                                 id="direccion"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
                                 value={direccion}
                                 onChange={(e) => setDireccion(e.target.value)}
@@ -99,7 +99,7 @@ export default function Registro() {
                             <label htmlFor="ciudad" className="block mb-2 text-lg">Ciudad</label>
                             <input
                                 id="ciudad"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
                                 value={ciudad}
                                 onChange={(e) => setCiudad(e.target.value)}
@@ -110,7 +110,7 @@ export default function Registro() {
                             <label htmlFor="pais" className="block mb-2 text-lg">País</label>
                             <input
                                 id="pais"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
                                 value={pais}
                                 onChange={(e) => setPais(e.target.value)}
@@ -121,7 +121,7 @@ export default function Registro() {
                             <label htmlFor="codigoPostal" className="block mb-2 text-lg">Código Postal</label>
                             <input
                                 id="codigoPostal"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
                                 value={codigoPostal}
                                 onChange={(e) => setCodigoPostal(e.target.value)}
@@ -132,7 +132,7 @@ export default function Registro() {
                             <label htmlFor="telefono" className="block mb-2 text-lg">Nº Teléfono</label>
                             <input
                                 id="telefono"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
                                 value={telefono}
                                 onChange={(e) => setTelefono(e.target.value)}
@@ -143,7 +143,7 @@ export default function Registro() {
                             <label htmlFor="email" className="block mb-2 text-lg">Email</label>
                             <input
                                 id="email"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -154,7 +154,7 @@ export default function Registro() {
                             <label htmlFor="password" className="block mb-2 text-lg">Contraseña</label>
                             <input
                                 id="password"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -165,7 +165,7 @@ export default function Registro() {
                             <label htmlFor="confirmPassword" className="block mb-2 text-lg">Confirmar Contraseña</label>
                             <input
                                 id="confirmPassword"
-                                className="border p-3 shadow-md border-gray-300 rounded-lg w-full"
+                                className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -174,7 +174,7 @@ export default function Registro() {
                         </div>
                         <div className="col-span-1 md:col-span-2">
                             <button
-                                className="bg-gradient-to-r from-black to-yellow-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-yellow-500 hover:to-black transition duration-300 ease-in-out"
+                                className="bg-gradient-to-r from-black to-custom-azul shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-custom-azul hover:to-black transition duration-300 ease-in-out"
                                 type="submit"
                             >
                                 REGISTRARSE
@@ -185,11 +185,11 @@ export default function Registro() {
                         <h3>
                             <span className="cursor-default">¿Ya tienes una cuenta?</span>
                             <a
-                                className="group text-yellow-400 transition-all duration-100 ease-in-out"
+                                className="group text-custom-azul transition-all duration-100 ease-in-out"
                                 href="/login"
                             >
                                 <span
-                                    className="bg-left-bottom ml-1 bg-gradient-to-r from-yellow-400 to-yellow-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
+                                    className="bg-left-bottom ml-1 bg-gradient-to-r from-custom-azul to-custom-azul bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
                                 >
                                     Iniciar Sesión
                                 </span>
@@ -200,14 +200,14 @@ export default function Registro() {
                     <div className="text-gray-500 flex text-center flex-col mt-4 items-center text-sm col-span-1 md:col-span-2">
                         <p className="cursor-default">
                             Al registrarte, aceptas nuestros
-                            <a className="group text-yellow-400 transition-all duration-100 ease-in-out" href="#">
-                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-yellow-400 to-yellow-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                            <a className="group text-custom-azul transition-all duration-100 ease-in-out" href="#">
+                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-custom-azul to-custom-azul bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
                                     Términos
                                 </span>
                             </a>
                             y
-                            <a className="group text-yellow-400 transition-all duration-100 ease-in-out" href="#">
-                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-yellow-400 to-yellow-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                            <a className="group text-custom-azul transition-all duration-100 ease-in-out" href="#">
+                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-custom-azul to-custom-azul bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
                                     Política de Privacidad
                                 </span>
                             </a>
