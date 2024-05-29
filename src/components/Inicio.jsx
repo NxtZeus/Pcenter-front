@@ -3,7 +3,10 @@ import { fetchProductos } from '../components/apis/Api';
 import ProductCard from './productCards/ProductCards';
 import { agregarItemAlCarrito, loadCarrito } from '../components/logic/FuncCarrito';
 import { AuthContext } from '../components/auth/AuthContext';
-import banner from '../assets/iphone.jpg';
+import banner from '../assets/banner.jpg';
+import banner2 from '../assets/banner2.jpg';
+import banner3 from '../assets/banner3.jpg';
+import Carousel from './carrousel/Carrousel';
 
 function Inicio() {
     const [productos, setProductos] = useState([]);
@@ -42,16 +45,24 @@ function Inicio() {
         return <div>Error al cargar los productos: {error.message}</div>;
     }
 
+    const images = [
+        banner,
+        banner2,
+        banner3,
+    ];
+
     return (
-        <div className="container mx-auto mt-8 mb-8">
-            <img src={banner} className='w-full'/>
-            <h1 className="mt-20 text-2xl font-bold mb-8">Productos Destacados</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center">
-                {productos.map((producto) => (
-                    <ProductCard key={producto.id} producto={producto} onAddToCart={manejarAgregarAlCarrito} />
-                ))}
+        <>
+            <Carousel images={images} />
+            <div className="container mx-auto mt-8 mb-8 px-4">
+                <h1 className="mt-8 text-2xl font-bold mb-8">Productos Destacados</h1>
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center">
+                    {productos.map((producto) => (
+                        <ProductCard key={producto.id} producto={producto} onAddToCart={manejarAgregarAlCarrito} />
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

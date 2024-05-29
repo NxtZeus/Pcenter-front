@@ -6,6 +6,12 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'sm': '640px',
+        'md': '1026px', // Cambia el valor de 'md' a 1025px
+        'lg': '1280px',
+        'xl': '1536px',
+      },
       fontFamily: {
         sans: ['Roboto', 'sans-serif'],
       },
@@ -25,13 +31,8 @@ export default {
       },
       colors: {
         'custom-azul': '#003366',
-        'custom-cobre': '#663300',
-        'custom-celeste': '#D0D9E1',
-        'custom-amarillo': '#FFD700',
-        'custom-amarillo2': 'FFFF00',
         'custom-naranja': '#FFA500',
         'custom-naranja2': '#FF6600',
-        'custom-verde': '#66FF66',
       },
     },
   },

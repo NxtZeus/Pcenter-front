@@ -7,7 +7,7 @@ const Carrito = ({ onClose, onEliminarItem, onIncrementItem, onDecrementItem, it
     const precioTotal = items.reduce((total, item) => total + parseFloat(item.producto.precio) * item.cantidad, 0);
 
     return (
-        <div className="absolute right-0 mt-2 mr-2 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl max-h-96 overflow-y-auto bg-white rounded-md shadow-xl shadow-yellow-500 py-2 border border-black">
+        <div className="absolute right-0 mt-2 mr-2 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl max-h-96 overflow-y-auto bg-white rounded-md shadow-xl shadow-custom-azul py-2 border border-black">
             <div className="flex justify-between items-center px-4 py-2">
                 <h2 className="text-lg font-semibold">Carrito</h2>
                 <button onClick={onClose} className="text-black hover:text-gray-700">&times;</button>

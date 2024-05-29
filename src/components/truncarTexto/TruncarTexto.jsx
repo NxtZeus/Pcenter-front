@@ -1,5 +1,3 @@
-import React from 'react';
-
 function TruncatedText({ text, maxLength }) {
     if (text.length <= maxLength) {
         return <span>{text}</span>;

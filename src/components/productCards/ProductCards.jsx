@@ -6,7 +6,7 @@ function ProductCard({ producto, onAddToCart }) {
             <div>
                 <img src={`${producto.imagen}`} alt={producto.nombre_producto} className="w-full h-48 object-cover mb-4 rounded-md" />
                 <h2 className="text-lg font-bold text-gray-800">{producto.nombre_producto}</h2>
-                <p className="text-lg text-right font-semibold mt-4 text-custom-azul">${producto.precio}</p>
+                <p className="text-lg text-right font-semibold mt-4 text-custom-azul">{producto.precio}€</p>
             </div>
             <div className="flex justify-end mt-4">
                 <button
