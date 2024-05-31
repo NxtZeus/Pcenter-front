@@ -32,7 +32,6 @@ export default {
       colors: {
         'custom-azul': '#003366',
         'custom-naranja': '#FFA500',
-        'custom-naranja2': '#FF6600',
       },
     },
   },

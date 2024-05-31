@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { getUsuario } from '../apis/Api';
 
 // Crear el contexto
 export const AuthContext = createContext();
@@ -6,25 +7,40 @@ export const AuthContext = createContext();
 // Crear el proveedor del contexto
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isSuperuser, setIsSuperuser] = useState(false);
 
     useEffect(() => {
-        // Verificar si hay un token en localStorage al cargar la aplicación
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token); // Si hay un token, el usuario está logueado
+        if (token) {
+            setIsLoggedIn(true);
+            fetchUserDetails(token);
+        }
     }, []);
+
+    const fetchUserDetails = async (token) => {
+        try {
+            const user = await getUsuario(token);
+            console.log('Fetched user details:', user);  // Log para verificar los detalles del usuario
+            setIsSuperuser(user.is_superuser);  // Verifica que 'user' contiene 'is_superuser'
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+        }
+    };
 
     const login = (token) => {
         localStorage.setItem('token', token);
         setIsLoggedIn(true);
+        fetchUserDetails(token);
     };
 
     const logout = () => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
+        setIsSuperuser(false);
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, login, logout, isSuperuser }}>
             {children}
         </AuthContext.Provider>
     );

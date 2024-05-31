@@ -2,7 +2,6 @@ import { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../components/auth/AuthContext';
-import Header from '../Header';
 
 export default function Login() {
     const [email, setEmail] = useState('');

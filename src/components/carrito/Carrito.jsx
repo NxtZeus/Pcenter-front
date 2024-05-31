@@ -6,6 +6,17 @@ const Carrito = ({ onClose, onEliminarItem, onIncrementItem, onDecrementItem, it
 
     const precioTotal = items.reduce((total, item) => total + parseFloat(item.producto.precio) * item.cantidad, 0);
 
+    const getImageUrl = (url) => {
+        const baseURL = 'http://127.0.0.1:8000'; // Ajusta esto según tu configuración
+
+        // Verificar si la URL ya contiene la base URL
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url;
+        }
+
+        return `${baseURL}${url}`;
+    };
+
     return (
         <div className="absolute right-0 mt-2 mr-2 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl max-h-96 overflow-y-auto bg-white rounded-md shadow-xl shadow-custom-azul py-2 border border-black">
             <div className="flex justify-between items-center px-4 py-2">
@@ -17,9 +28,9 @@ const Carrito = ({ onClose, onEliminarItem, onIncrementItem, onDecrementItem, it
                 {items.map(item => (
                     <li key={item.id} className="flex justify-between items-center px-4 py-2 hover:bg-gray-100">
                         <div className="flex items-center space-x-2 flex-1">
-                            <img src={item.producto.imagen} alt={item.producto.nombre_producto} className="w-12 h-12 object-cover rounded-md" />
+                            <img src={getImageUrl(item.producto.imagen)} alt={item.producto.nombre_producto} className="w-12 h-12 object-cover rounded-md" />
                             <div className="flex-1">
-                                <p className="whitespace-normal sm:whitespace-nowrap"><TruncatedText text={item.producto.nombre_producto} maxLength={40} /></p>
+                                <p className="whitespace-normal md:whitespace-nowrap"><TruncatedText text={item.producto.nombre_producto} maxLength={40} /></p>
                                 <p className="text-sm text-gray-600">{item.producto.precio}€ x {item.cantidad}</p>
                             </div>
                         </div>
