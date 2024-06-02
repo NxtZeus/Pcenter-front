@@ -15,6 +15,8 @@ import MainLayout from './components/layout/MainLayout';
 import Inicio from './pages/Inicio';
 import Productos from './pages/Productos';
 import Header from './components/layout/Header';
+import InfoProducto from './pages/InfoProductos.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: '/productos',
         element: <Productos />,
+      },
+      {
+        path: '/producto/:id',
+        element: <InfoProducto />,
       },
       {
         path: '/contacto',

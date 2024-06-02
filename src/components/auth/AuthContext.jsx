@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isSuperuser, setIsSuperuser] = useState(false);
+    const [firstNombre, setFirstNombre] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -20,8 +21,9 @@ export const AuthProvider = ({ children }) => {
     const fetchUserDetails = async (token) => {
         try {
             const user = await getUsuario(token);
-            console.log('Fetched user details:', user);  // Log para verificar los detalles del usuario
-            setIsSuperuser(user.is_superuser);  // Verifica que 'user' contiene 'is_superuser'
+            console.log('Fetched user details:', user);
+            setIsSuperuser(user.is_superuser);
+            setFirstNombre(user.first_name);
         } catch (error) {
             console.error('Error fetching user details:', error);
         }
@@ -37,10 +39,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token');
         setIsLoggedIn(false);
         setIsSuperuser(false);
+        setFirstNombre('');
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout, isSuperuser }}>
+        <AuthContext.Provider value={{ isLoggedIn, login, logout, isSuperuser, firstNombre }}>
             {children}
         </AuthContext.Provider>
     );
