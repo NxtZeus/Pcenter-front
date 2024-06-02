@@ -1,14 +1,15 @@
 import { useContext, useRef, useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaSearch, FaUserCircle, FaBars } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaShoppingCart, FaUserCircle, FaBars } from 'react-icons/fa';
 import { RxCross1 } from "react-icons/rx";
 import logo from '../../assets/logo.webp';
 import Logout from '../login/Logout';
 import Carrito from '../carrito/Carrito';
 import { AuthContext } from '../auth/AuthContext';
 import { useCarrito } from '../carritoContext/CarritoContext';
-import { fetchCategorias } from '../apis/Api';
+import { fetchCategorias, handleSearch } from '../apis/Api';
 import { handleIncrementItem, handleDecrementItem, handleEliminarItem } from '../logic/FuncCarrito';
+import SearchBar from '../search-bar/SearchBar';
 
 function Header() {
     const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -21,6 +22,7 @@ function Header() {
     const categoriesMenuRef = useRef(null);
     const { isLoggedIn, logout, isSuperuser } = useContext(AuthContext);
     const { itemsCarrito, setItemsCarrito } = useCarrito();
+    const navigate = useNavigate();
 
     const handleClickOutside = useCallback((event) => {
         if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
@@ -55,6 +57,11 @@ function Header() {
 
     const totalItems = itemsCarrito.reduce((sum, item) => sum + item.cantidad, 0);
 
+    const handleCategoryClick = (categoria) => {
+        setCategoriesMenuOpen(false);
+        navigate('/productos', { state: { categoriaSeleccionada: categoria } });
+    };
+
     return (
         <>
             <header className="bg-custom-azul sticky top-0 w-full py-2 sm:py-4 px-4 shadow-md flex justify-between items-center z-10">
@@ -69,15 +76,12 @@ function Header() {
                         <Link to="/productos" className="text-white text-xl hover:text-custom-naranja transition duration-300">Productos</Link>
                         <button onClick={() => setCategoriesMenuOpen(!isCategoriasMenuOpen)} className="text-white text-xl hover:text-custom-naranja transition duration-300">Categorías</button>
                         {isSuperuser && (
-                            <Link to="http://127.0.0.1:8000/admin/" className="bg-red-500 text-white text-xl px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Admin</Link>
+                            <a href="http://127.0.0.1:8000/admin/" target='_blank' className="bg-red-500 text-white text-xl px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Admin</a>
                         )}
                     </nav>
                 </div>
                 <div className='flex flex-row items-center space-x-2 xl:space-x-6'>
-                    <div className="relative flex items-center">
-                        <input type="text" placeholder="Buscar..." className="px-2 py-1 rounded-md w-32 sm:px-4 sm:py-2 sm:w-80 lg:w-96 pr-10" />
-                        <FaSearch className="absolute right-2 text-black" />
-                    </div>
+                    <SearchBar handleSearch={handleSearch} />
                     {isLoggedIn ? (
                         <>
                             <div className="flex items-center">
@@ -137,9 +141,9 @@ function Header() {
                     <ul className="mt-4">
                         {categorias.map((categoria) => (
                             <li key={categoria} className="border-b border-gray-200">
-                                <Link to={`/categoria/${categoria}`} className="block px-4 py-2 text-white hover:bg-gray-300 transition duration-300">
+                                <button onClick={() => handleCategoryClick(categoria)} className="block px-4 py-2 text-white hover:bg-gray-300 transition duration-300 w-full text-left">
                                     {categoria}
-                                </Link>
+                                </button>
                             </li>
                         ))}
                     </ul>

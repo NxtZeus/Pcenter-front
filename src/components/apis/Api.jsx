@@ -30,11 +30,21 @@ export const fetchProductos = async () => {
     }
 };
 
+export const handleSearch = async (query) => {
+    try {
+        const response = await axios.get(`${API_URL}/search/?search=${query}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error al buscar productos:', error);
+        return { error: true, message: 'Error al buscar productos' };
+    }
+};
+
 export const fetchCategorias = async () => {
     try {
         const response = await axios.get(`${API_URL}/categorias/`);
         return response.data.map(categoria => {
-            switch(categoria) {
+            switch (categoria) {
                 case 'ordenadores':
                     return 'Ordenadores';
                 case 'portatiles':

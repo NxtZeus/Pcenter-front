@@ -3,11 +3,8 @@ import { fetchProductos } from '../components/apis/Api';
 import ProductCard from '../components/productCards/ProductCards';
 import { agregarItemAlCarrito, loadCarrito } from '../components/logic/FuncCarrito';
 import { AuthContext } from '../components/auth/AuthContext';
-import banner from '../assets/banner.webp';
-import banner2 from '../assets/banner2.jpg';
-import banner3 from '../assets/banner3.jpg';
-import banner4 from '../assets/banner4.jpeg';
-import Carousel from '../components/carrousel/Carrousel';
+import banner2 from '../assets/banner2.webp';
+import { Link } from 'react-router-dom';
 
 function Inicio() {
     const [productos, setProductos] = useState([]);
@@ -45,26 +42,33 @@ function Inicio() {
     if (error) {
         return <div>Error al cargar los productos: {error.message}</div>;
     }
-
-    const images = [
-        banner,
-        banner2,
-        banner3,
-        banner4
-    ];
-
     return (
-        <>
-            <Carousel images={images} />
-            <div className="container mx-auto mt-12 mb-8 px-4 bg-gray-200 rounded-lg">
-                <h1 className="pl-4 pt-6 text-2xl text-custom-azul font-bold mb-8">Productos Destacados</h1>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center">
+        <main className="flex-1">
+            <section className="bg-custom-azul text-white py-20 px-6 flex flex-col items-center justify-center">
+                <img
+                    src={banner2}
+                    width={1200}
+                    height={600}
+                    alt="Hero Banner"
+                    className="w-full max-w-5xl rounded-lg shadow-lg"
+                />
+                <div className="mt-8 text-center space-y-4">
+                    <h1 className="text-4xl font-bold">Bienvenido a PCenter</h1>
+                    <p className="text-lg">Encuentra el mejor hardware para tu ordenador al mejor precio y según tus necesidades.</p>
+                    <div>
+                        <Link to='/productos' className='bg-custom-naranja px-4 py-2 rounded-md hover:bg-orange-500 transition duration-300"'>Compra ya</Link>
+                    </div>
+                </div>
+            </section>
+            <section className="py-12 px-6">
+                <h2 className="text-3xl font-bold mb-8">Productos destacados</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {productos.map((producto) => (
                         <ProductCard key={producto.id} producto={producto} onAddToCart={manejarAgregarAlCarrito} />
                     ))}
                 </div>
-            </div>
-        </>
+            </section>
+        </main>
     );
 }
 

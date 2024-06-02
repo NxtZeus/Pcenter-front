@@ -8,7 +8,7 @@ export default {
     extend: {
       screens: {
         'sm': '640px',
-        'md': '1026px', // Cambia el valor de 'md' a 1025px
+        'md': '1023px',
         'lg': '1280px',
         'xl': '1536px',
       },

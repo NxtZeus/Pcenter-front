@@ -3,12 +3,15 @@ import { fetchCategorias, fetchProductos } from '../components/apis/Api';
 import { agregarItemAlCarrito } from '../components/logic/FuncCarrito';
 import ProductCard from '../components/productCards/ProductCards';
 import { useCarrito } from '../components/carritoContext/CarritoContext';
+import { useLocation } from 'react-router-dom';
 
 const Productos = () => {
     const [productos, setProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
-    const { itemsCarrito, setItemsCarrito } = useCarrito(); // Usa el contexto
+    const { itemsCarrito, setItemsCarrito } = useCarrito();
+    const location = useLocation();
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
         const fetchProductosData = async () => {
@@ -35,18 +38,31 @@ const Productos = () => {
         fetchCategoriasData();
     }, []);
 
+    useEffect(() => {
+        if (location.state?.results) {
+            setSearchResults(location.state.results);
+            setCategoriaSeleccionada('');
+        } else if (location.state?.categoriaSeleccionada) {
+            setCategoriaSeleccionada(location.state.categoriaSeleccionada);
+            setSearchResults([]);
+        }
+    }, [location.state]);
+
     const handleCategoriaChange = (event) => {
         setCategoriaSeleccionada(event.target.value);
+        setSearchResults([]); // Limpiar los resultados de búsqueda cuando se selecciona una categoría
     };
 
     const normalizeString = (str) => {
         return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     };
 
-    const productosFiltrados = categoriaSeleccionada
+    const productosFiltradosPorCategoria = categoriaSeleccionada
         ? productos.filter(producto => 
             normalizeString(producto.categoria).toLowerCase() === normalizeString(categoriaSeleccionada).toLowerCase())
         : productos;
+
+    const productosAMostrar = searchResults.length > 0 ? searchResults : productosFiltradosPorCategoria;
 
     const handleAddToCart = async (productoId) => {
         try {
@@ -59,7 +75,9 @@ const Productos = () => {
 
     return (
         <div className="container mt-4 mx-auto px-4 py-8 bg-gray-200 rounded-lg shadow-lg">
-            <h1 className="text-4xl font-bold mb-8 text-custom-azul text-center">Todos los Productos</h1>
+            <h1 className="text-4xl font-bold mb-8 text-custom-azul text-center">
+                {searchResults.length > 0 ? 'Resultados de la Búsqueda' : 'Todos los Productos'}
+            </h1>
             <div className="flex flex-col sm:flex-row justify-center items-center mb-8">
                 <label htmlFor="categoria" className="text-lg font-medium text-custom-azul mb-2 sm:mb-0 sm:mr-4">
                     Filtrar por categoría:
@@ -81,7 +99,7 @@ const Productos = () => {
             </div>
             <div className="flex justify-center mb-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    {productosFiltrados.map((producto) => (
+                    {productosAMostrar.map((producto) => (
                         <ProductCard key={producto.id} producto={producto} onAddToCart={handleAddToCart} />
                     ))}
                 </div>

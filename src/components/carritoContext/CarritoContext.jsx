@@ -10,6 +10,7 @@ export const useCarrito = () => {
 export const CarritoProvider = ({ children }) => {
     const [itemsCarrito, setItemsCarrito] = useState([]);
 
+    
     useEffect(() => {
         loadCarrito(setItemsCarrito);
     }, []);
