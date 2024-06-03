@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api'; // Corrige la URL base eliminando la barra al final
+const API_URL = 'http://127.0.0.1:8000/api';
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -20,10 +20,19 @@ export const getUsuario = async (token) => {
     }
 };
 
+export const updateUsuario = async (data) => {
+    try {
+        const response = await axios.put(`${API_URL}/usuarios/detalles/`, data, getAuthHeaders());
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const fetchProductos = async () => {
     try {
         const response = await axios.get(`${API_URL}/productos/`);
-        return response.data; // Devolver solo response.data
+        return response.data;
     } catch (error) {
         console.error('Error fetching productos:', error);
         throw error;
@@ -101,5 +110,33 @@ export const añadirAlCarrito = async (productoId, setItemsCarrito) => {
         setItemsCarrito(prevItems => [...prevItems, response.data]);
     } catch (error) {
         console.error('Error al añadir el producto al carrito:', error);
+    }
+};
+
+export const fetchPedidos = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/usuario/pedidos/`, getAuthHeaders());
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const cancelarPedido = async (pedidoId) => {
+    try {
+        const response = await axios.patch(`${API_URL}/pedidos/${pedidoId}/`, { estado_pedido: 'cancelado' }, getAuthHeaders());
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+export const pagar = async (data) => {
+    try {
+        const response = await axios.post(`${API_URL}/pago/`, data, getAuthHeaders());
+        return response.data;
+    } catch (error) {
+        throw error;
     }
 };

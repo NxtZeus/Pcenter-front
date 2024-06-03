@@ -1,13 +1,17 @@
+// infoproducto.jsx
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchProductos } from '../components/apis/Api';
 import Carrousel from '../carrousel/Carrousel';
+import { agregarItemAlCarrito } from '../components/logic/FuncCarrito';
+import { useCarrito } from '../components/carritoContext/CarritoContext';
 
 const InfoProducto = () => {
     const { id } = useParams();
     const [producto, setProducto] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { itemsCarrito, setItemsCarrito } = useCarrito(); // Obtener el estado del carrito del contexto
 
     useEffect(() => {
         const fetchProducto = async () => {
@@ -28,6 +32,17 @@ const InfoProducto = () => {
 
         fetchProducto();
     }, [id]);
+
+    const handleAddToCart = async () => {
+        if (producto) {
+            try {
+                await agregarItemAlCarrito(producto.id, setItemsCarrito);
+                console.log('Producto añadido al carrito');
+            } catch (error) {
+                console.error('Error al añadir el producto al carrito:', error);
+            }
+        }
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -54,7 +69,10 @@ const InfoProducto = () => {
                         <h1 className="text-2xl font-bold">{producto.nombre_producto}</h1>
                         <div className="text-4xl font-bold">{producto.precio}€</div>
                     </div>
-                    <button className="w-full bg-custom-azul px-4 py-2 rounded-md hover:bg-custom-naranja transition duration-300 mt-4 text-white" onClick={() => console.log('Añadir al carrito')}>
+                    <button
+                        className="w-full bg-custom-azul px-4 py-2 rounded-md hover:bg-custom-naranja transition duration-300 mt-4 text-white"
+                        onClick={handleAddToCart}
+                    >
                         Añadir al carrito
                     </button>
                 </div>

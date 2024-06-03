@@ -16,6 +16,8 @@ import Inicio from './pages/Inicio';
 import Productos from './pages/Productos';
 import Header from './components/layout/Header';
 import InfoProducto from './pages/InfoProductos.jsx';
+import Perfil from './pages/Perfil.jsx';
+import PasarelaPago from './pages/Pago.jsx';
 
 
 const router = createBrowserRouter([
@@ -36,9 +38,13 @@ const router = createBrowserRouter([
         element: <InfoProducto />,
       },
       {
-        path: '/contacto',
-        element: <Header />,
+        path: '/pago',
+        element: <PasarelaPago />,
       },
+      {
+        path: '/perfil',
+        element: <Perfil />,
+      }
     ],
   },
   {

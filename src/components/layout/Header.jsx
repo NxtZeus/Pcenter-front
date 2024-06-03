@@ -65,7 +65,7 @@ function Header() {
     return (
         <>
             <header className="bg-custom-azul sticky top-0 w-full py-2 sm:py-4 px-4 shadow-md flex justify-between items-center z-10">
-                <div>
+                <div className='z-20'>
                     <Link to="/">
                         <img src={logo} alt="Logo de la tienda" className="h-8 sm:h-12 md:h-16 lg:h-20 mr-4" />
                     </Link>

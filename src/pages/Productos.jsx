@@ -50,7 +50,7 @@ const Productos = () => {
 
     const handleCategoriaChange = (event) => {
         setCategoriaSeleccionada(event.target.value);
-        setSearchResults([]); // Limpiar los resultados de búsqueda cuando se selecciona una categoría
+        setSearchResults([]);
     };
 
     const normalizeString = (str) => {

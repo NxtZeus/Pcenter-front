@@ -3,7 +3,7 @@ import { fetchProductos } from '../components/apis/Api';
 import ProductCard from '../components/productCards/ProductCards';
 import { agregarItemAlCarrito, loadCarrito } from '../components/logic/FuncCarrito';
 import { AuthContext } from '../components/auth/AuthContext';
-import banner2 from '../assets/banner2.webp';
+import banner from '../assets/banner.webp';
 import { Link } from 'react-router-dom';
 
 function Inicio() {
@@ -12,7 +12,7 @@ function Inicio() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const { isLoggedIn, firstNombre } = useContext(AuthContext);
-
+    
     useEffect(() => {
         const obtenerProductos = async () => {
             try {
@@ -47,7 +47,7 @@ function Inicio() {
         <main className="flex-1">
             <section className="bg-custom-azul2 text-white py-20 px-6 flex flex-col items-center justify-center">
                 <img
-                    src={banner2}
+                    src={banner}
                     width={1200}
                     height={600}
                     alt="banner"
@@ -61,13 +61,13 @@ function Inicio() {
                             Compra ya
                         </Link>
                     </div>
-                </div>
+                </div> 
             </section>
             <section className="py-12 px-6">
                 <h2 className="text-3xl font-bold mb-8">Productos destacados</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {productos.map((producto) => (
-                        <ProductCard key={producto.id} producto={producto} onAddToCart={manejarAgregarAlCarrito} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-6">
+                    {productos.slice(0, 8).map((producto) => (
+                        <ProductCard key={producto.id} producto={producto} />
                     ))}
                 </div>
             </section>
