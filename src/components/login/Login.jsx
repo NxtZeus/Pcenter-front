@@ -43,8 +43,8 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="bg-gradient-to-r from-black to-custom-azul rounded-[26px] m-4 w-full max-w-lg">
-                <div className="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-8 md:p-12 m-2">
-                    <h1 className="pt-8 pb-6 font-bold text-5xl text-center">Iniciar Sesión</h1>
+                <div className="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-6 md:p-12 m-2">
+                    <h1 className="pt-8 pb-6 font-bold text-4xl md:text-5xl text-center">Iniciar Sesión</h1>
                     <form onSubmit={handleLogin} className="space-y-6">
                         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
                         {successMessage && <p className="text-green-500 text-sm mb-4">{successMessage}</p>}
@@ -72,7 +72,7 @@ export default function Login() {
                             />
                         </div>
                         <button
-                            className="bg-gradient-to-r from-black to-custom-azul shadow-lg mt-8 p-4 text-white rounded-lg w-full hover:scale-105 hover:from-custom-azul hover:to-black transition duration-300 ease-in-out"
+                            className="bg-gradient-to-r from-black to-custom-azul shadow-lg mt-6 md:mt-8 p-4 text-white rounded-lg w-full hover:scale-105 hover:from-custom-azul hover:to-black transition duration-300 ease-in-out"
                             type="submit"
                         >
                             Iniciar Sesión

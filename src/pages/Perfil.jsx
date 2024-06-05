@@ -1,62 +1,62 @@
 import { useState, useEffect, useContext } from 'react';
-import UsuarioInfo from '../components/usuarios/UsuarioInfo';
-import UsuarioPedidos from '../components/usuarios/UsuarioPedidos';
-import { fetchPedidos, getUsuario, updateUsuario } from '../components/apis/Api';
+import InfoUsuario from '../components/usuarios/InfoUsuario';
+import PedidosUsuario from '../components/usuarios/PedidosUsuario';
+import { obtenerPedidos, obtenerUsuario, actualizarUsuario } from '../components/apis/Api';
 import { AuthContext } from '../components/auth/AuthContext';
 import { Navigate } from 'react-router-dom';
 
 const Perfil = () => {
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const { estaLogueado, setEstaLogueado } = useContext(AuthContext);
     const [usuario, setUsuario] = useState(null);
     const [pedidos, setPedidos] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [cargando, setCargando] = useState(true);
 
     useEffect(() => {
-        const fetchUsuarioData = async () => {
+        const obtenerDatosUsuario = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const usuarioData = await getUsuario(token);
-                    setUsuario(usuarioData);
-                    const pedidosData = await fetchPedidos();
-                    setPedidos(pedidosData);
-                    setIsLoggedIn(true);
+                    const datosUsuario = await obtenerUsuario(token);
+                    setUsuario(datosUsuario);
+                    const datosPedidos = await obtenerPedidos();
+                    setPedidos(datosPedidos);
+                    setEstaLogueado(true);
                 } else {
-                    setIsLoggedIn(false);
+                    setEstaLogueado(false);
                 }
             } catch (error) {
                 console.error('Error al obtener datos del usuario:', error);
-                setIsLoggedIn(false);
+                setEstaLogueado(false);
             } finally {
-                setLoading(false);
+                setCargando(false);
             }
         };
 
-        fetchUsuarioData();
-    }, [setIsLoggedIn]);
+        obtenerDatosUsuario();
+    }, [setEstaLogueado]);
 
-    const handleUpdateUsuario = async (updatedData) => {
+    const manejarActualizarUsuario = async (datosActualizados) => {
         try {
-            const updatedUsuario = await updateUsuario(updatedData);
-            setUsuario(updatedUsuario);
+            const usuarioActualizado = await actualizarUsuario(datosActualizados);
+            setUsuario(usuarioActualizado);
         } catch (error) {
             console.error('Error al actualizar los datos del usuario:', error);
         }
     };
 
-    if (!isLoggedIn && !loading) {
+    if (!estaLogueado && !cargando) {
         return <Navigate to="/login" />;
     }
 
     return (
         <div className="container mt-4 mx-auto px-4 py-8 bg-gray-200 rounded-lg shadow-lg">
-            {loading ? (
-                <p>Loading...</p>
+            {cargando ? (
+                <p>Cargando...</p>
             ) : (
                 usuario && (
                     <>
-                        <UsuarioInfo usuario={usuario} onUpdateUsuario={handleUpdateUsuario} />
-                        <UsuarioPedidos pedidos={pedidos} setPedidos={setPedidos} />
+                        <InfoUsuario usuario={usuario} onActualizarUsuario={manejarActualizarUsuario} />
+                        <PedidosUsuario pedidos={pedidos} setPedidos={setPedidos} />
                     </>
                 )
             )}

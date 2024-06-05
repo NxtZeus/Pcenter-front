@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 export default function Registro() {
@@ -76,7 +76,7 @@ export default function Registro() {
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="bg-gradient-to-r from-black to-custom-azul rounded-[26px] m-4 w-full max-w-4xl">
                 <div className="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-6 md:p-10 m-2">
-                    <h1 className="pt-8 pb-6 text-custom-azul font-bold text-5xl text-center">Registrarse</h1>
+                    <h1 className="pt-8 pb-6 text-custom-azul font-bold text-4xl md:text-5xl text-center">Registrarse</h1>
                     {successMessage && (
                         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                             <span className="block sm:inline">Registrado correctamente.</span>

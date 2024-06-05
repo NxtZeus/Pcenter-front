@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { loadCarrito } from '../logic/FuncCarrito';
+import { cargarCarrito } from '../logic/FuncCarrito';
 
 const CarritoContext = createContext();
 
@@ -11,16 +11,16 @@ export const CarritoProvider = ({ children }) => {
     const [itemsCarrito, setItemsCarrito] = useState([]);
 
     useEffect(() => {
-        loadCarrito(setItemsCarrito);
+        cargarCarrito(setItemsCarrito);
     }, []);
 
-    const value = {
+    const valor = {
         itemsCarrito,
         setItemsCarrito
     };
 
     return (
-        <CarritoContext.Provider value={value}>
+        <CarritoContext.Provider value={valor}>
             {children}
         </CarritoContext.Provider>
     );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { fetchCategorias, fetchProductos } from '../components/apis/Api';
+import { obtenerCategorias, obtenerProductos } from '../components/apis/Api';
 import { agregarItemAlCarrito } from '../components/logic/FuncCarrito';
-import ProductCard from '../components/productCards/ProductCards';
+import TarjetaProducto from '../components/tarjetasProducto/TarjetasProducto';
 import { useCarrito } from '../components/carritoContext/CarritoContext';
 import { useLocation } from 'react-router-dom';
 
@@ -11,12 +11,12 @@ const Productos = () => {
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
     const { itemsCarrito, setItemsCarrito } = useCarrito();
     const location = useLocation();
-    const [searchResults, setSearchResults] = useState([]);
+    const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
 
     useEffect(() => {
-        const fetchProductosData = async () => {
+        const obtenerDatosProductos = async () => {
             try {
-                const response = await fetchProductos();
+                const response = await obtenerProductos();
                 setProductos(response);
             } catch (error) {
                 console.error('Error al obtener los productos:', error);
@@ -24,9 +24,9 @@ const Productos = () => {
             }
         };
 
-        const fetchCategoriasData = async () => {
+        const obtenerDatosCategorias = async () => {
             try {
-                const data = await fetchCategorias();
+                const data = await obtenerCategorias();
                 setCategorias(data);
             } catch (error) {
                 console.error('Error al obtener las categorías:', error);
@@ -34,37 +34,37 @@ const Productos = () => {
             }
         };
 
-        fetchProductosData();
-        fetchCategoriasData();
+        obtenerDatosProductos();
+        obtenerDatosCategorias();
     }, []);
 
     useEffect(() => {
-        if (location.state?.results) {
-            setSearchResults(location.state.results);
+        if (location.state?.resultados) {
+            setResultadosBusqueda(location.state.resultados);
             setCategoriaSeleccionada('');
         } else if (location.state?.categoriaSeleccionada) {
             setCategoriaSeleccionada(location.state.categoriaSeleccionada);
-            setSearchResults([]);
+            setResultadosBusqueda([]);
         }
     }, [location.state]);
 
-    const handleCategoriaChange = (event) => {
+    const manejarCambioCategoria = (event) => {
         setCategoriaSeleccionada(event.target.value);
-        setSearchResults([]);
+        setResultadosBusqueda([]);
     };
 
-    const normalizeString = (str) => {
+    const normalizarString = (str) => {
         return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     };
 
     const productosFiltradosPorCategoria = categoriaSeleccionada
-        ? productos.filter(producto => 
-            normalizeString(producto.categoria).toLowerCase() === normalizeString(categoriaSeleccionada).toLowerCase())
+        ? productos.filter(producto =>
+            normalizarString(producto.categoria).toLowerCase() === normalizarString(categoriaSeleccionada).toLowerCase())
         : productos;
 
-    const productosAMostrar = searchResults.length > 0 ? searchResults : productosFiltradosPorCategoria;
+    const productosAMostrar = resultadosBusqueda.length > 0 ? resultadosBusqueda : productosFiltradosPorCategoria;
 
-    const handleAddToCart = async (productoId) => {
+    const manejarAgregarAlCarrito = async (productoId) => {
         try {
             await agregarItemAlCarrito(productoId, setItemsCarrito);
             console.log(`Producto añadido al carrito: ${productoId}`);
@@ -76,7 +76,7 @@ const Productos = () => {
     return (
         <div className="container mt-4 mx-auto px-4 py-8 bg-gray-200 rounded-lg shadow-lg">
             <h1 className="text-4xl font-bold mb-8 text-custom-azul text-center">
-                {searchResults.length > 0 ? 'Resultados de la Búsqueda' : 'Todos los Productos'}
+                {resultadosBusqueda.length > 0 ? 'Resultados de la Búsqueda' : 'Todos los Productos'}
             </h1>
             <div className="flex flex-col sm:flex-row justify-center items-center mb-8">
                 <label htmlFor="categoria" className="text-lg font-medium text-custom-azul mb-2 sm:mb-0 sm:mr-4">
@@ -86,7 +86,7 @@ const Productos = () => {
                     id="categoria"
                     name="categoria"
                     value={categoriaSeleccionada}
-                    onChange={handleCategoriaChange}
+                    onChange={manejarCambioCategoria}
                     className="block w-full sm:w-64 pl-3 pr-10 py-2 text-base border border-custom-azul bg-white focus:outline-none focus:ring-custom-azul focus:border-custom-azul sm:text-sm rounded-md shadow-sm"
                 >
                     <option value="">Todas las categorías</option>
@@ -100,7 +100,7 @@ const Productos = () => {
             <div className="flex justify-center mb-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     {productosAMostrar.map((producto) => (
-                        <ProductCard key={producto.id} producto={producto} onAddToCart={handleAddToCart} />
+                        <TarjetaProducto key={producto.id} producto={producto} onAddToCart={manejarAgregarAlCarrito} />
                     ))}
                 </div>
             </div>

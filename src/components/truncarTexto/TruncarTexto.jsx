@@ -1,4 +1,4 @@
-function TruncatedText({ text, maxLength }) {
+function TruncarTexto({ text, maxLength }) {
     if (text.length <= maxLength) {
         return <span>{text}</span>;
     }
@@ -7,4 +7,4 @@ function TruncatedText({ text, maxLength }) {
     return <span>{truncated}</span>;
 }
 
-export default TruncatedText;
+export default TruncarTexto;

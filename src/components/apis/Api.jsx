@@ -1,67 +1,67 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api';
+const URL_API = 'http://127.0.0.1:8000/api';
 
-const getAuthHeaders = () => {
+const obtenerHeadersAuth = () => {
     const token = localStorage.getItem('token');
     return { headers: { 'Authorization': `Token ${token}` } };
 };
 
-export const getUsuario = async (token) => {
+export const obtenerUsuario = async (token) => {
     try {
-        const response = await axios.get(`${API_URL}/usuarios/detalles/`, {
+        const respuesta = await axios.get(`${URL_API}/usuarios/detalles/`, {
             headers: {
                 Authorization: `Token ${token}`
             }
         });
-        return response.data;
+        return respuesta.data;
     } catch (error) {
         throw error;
     }
 };
 
-export const updateUsuario = async (data) => {
+export const actualizarUsuario = async (datos) => {
     try {
-        const response = await axios.put(`${API_URL}/usuarios/detalles/`, data, getAuthHeaders());
-        return response.data;
+        const respuesta = await axios.put(`${URL_API}/usuarios/detalles/`, datos, obtenerHeadersAuth());
+        return respuesta.data;
     } catch (error) {
         throw error;
     }
 };
 
-export const deleteUsuario = async () => {
+export const eliminarUsuario = async () => {
     try {
-        const response = await axios.delete(`${API_URL}/usuarios/detalles/`, getAuthHeaders());
-        return response.data;
+        const respuesta = await axios.delete(`${URL_API}/usuarios/detalles/`, obtenerHeadersAuth());
+        return respuesta.data;
     } catch (error) {
         throw error;
     }
 };
 
-export const fetchProductos = async () => {
+export const obtenerProductos = async () => {
     try {
-        const response = await axios.get(`${API_URL}/productos/`);
-        return response.data;
+        const respuesta = await axios.get(`${URL_API}/productos/`);
+        return respuesta.data;
     } catch (error) {
-        console.error('Error fetching productos:', error);
+        console.error('Error al obtener productos:', error);
         throw error;
     }
 };
 
-export const handleSearch = async (query) => {
+export const realizarBusqueda = async (consulta) => {
     try {
-        const response = await axios.get(`${API_URL}/search/?search=${query}`);
-        return response.data;
+        const respuesta = await axios.get(`${URL_API}/search/?search=${consulta}`);
+        return respuesta.data;
     } catch (error) {
         console.error('Error al buscar productos:', error);
-        return { error: true, message: 'Error al buscar productos' };
+        return { error: true, mensaje: 'Error al buscar productos' };
     }
 };
 
-export const fetchCategorias = async () => {
+export const obtenerCategorias = async () => {
     try {
-        const response = await axios.get(`${API_URL}/categorias/`);
-        return response.data.map(categoria => {
+        const respuesta = await axios.get(`${URL_API}/categorias/`);
+        return respuesta.data.map(categoria => {
             switch (categoria) {
                 case 'ordenadores':
                     return 'Ordenadores';
@@ -85,29 +85,29 @@ export const fetchCategorias = async () => {
     }
 };
 
-export const fetchCarrito = async () => {
+export const obtenerCarrito = async () => {
     try {
-        const response = await axios.get(`${API_URL}/ver-carrito/`, getAuthHeaders());
-        return response.data;
+        const respuesta = await axios.get(`${URL_API}/ver-carrito/`, obtenerHeadersAuth());
+        return respuesta.data;
     } catch (error) {
         throw error;
     }
 };
 
-export const updateCarritoItem = async (productoId, cantidad) => {
+export const actualizarItemCarrito = async (productoId, cantidad) => {
     try {
-        await axios.patch(`${API_URL}/actualizar-carrito/`, {
+        await axios.patch(`${URL_API}/actualizar-carrito/`, {
             producto_id: productoId,
             cantidad
-        }, getAuthHeaders());
+        }, obtenerHeadersAuth());
     } catch (error) {
         throw error;
     }
 };
 
-export const deleteCarritoItem = async (productoId) => {
+export const eliminarItemCarrito = async (productoId) => {
     try {
-        await axios.delete(`${API_URL}/eliminar-carrito/${productoId}/`, getAuthHeaders());
+        await axios.delete(`${URL_API}/eliminar-carrito/${productoId}/`, obtenerHeadersAuth());
     } catch (error) {
         throw error;
     }
@@ -115,17 +115,17 @@ export const deleteCarritoItem = async (productoId) => {
 
 export const añadirAlCarrito = async (productoId, setItemsCarrito) => {
     try {
-        const response = await axios.post(`${API_URL}/añadir-carrito/`, { producto_id: productoId, cantidad: 1 }, getAuthHeaders());
-        setItemsCarrito(prevItems => [...prevItems, response.data]);
+        const respuesta = await axios.post(`${URL_API}/añadir-carrito/`, { producto_id: productoId, cantidad: 1 }, obtenerHeadersAuth());
+        setItemsCarrito(prevItems => [...prevItems, respuesta.data]);
     } catch (error) {
         console.error('Error al añadir el producto al carrito:', error);
     }
 };
 
-export const fetchPedidos = async () => {
+export const obtenerPedidos = async () => {
     try {
-        const response = await axios.get(`${API_URL}/usuario/pedidos/`, getAuthHeaders());
-        return response.data;
+        const respuesta = await axios.get(`${URL_API}/usuario/pedidos/`, obtenerHeadersAuth());
+        return respuesta.data;
     } catch (error) {
         throw error;
     }
@@ -133,18 +133,17 @@ export const fetchPedidos = async () => {
 
 export const cancelarPedido = async (pedidoId) => {
     try {
-        const response = await axios.patch(`${API_URL}/pedidos/${pedidoId}/`, { estado_pedido: 'cancelado' }, getAuthHeaders());
-        return response.data;
+        const respuesta = await axios.patch(`${URL_API}/pedidos/${pedidoId}/`, { estado_pedido: 'cancelado' }, obtenerHeadersAuth());
+        return respuesta.data;
     } catch (error) {
         throw error;
     }
 };
 
-
-export const pagar = async (data) => {
+export const pagar = async (datos) => {
     try {
-        const response = await axios.post(`${API_URL}/pago/`, data, getAuthHeaders());
-        return response.data;
+        const respuesta = await axios.post(`${URL_API}/pago/`, datos, obtenerHeadersAuth());
+        return respuesta.data;
     } catch (error) {
         throw error;
     }

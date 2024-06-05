@@ -1,52 +1,52 @@
 import React, { useState } from 'react';
 
-const Carrousel = ({ images = [] }) => {
-    const [activeIndex, setActiveIndex] = useState(0);
+const Carrusel = ({ imagenes = [] }) => {
+    const [indiceActivo, setIndiceActivo] = useState(0);
 
-    const handlePrev = () => {
-        setActiveIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+    const manejarPrevio = () => {
+        setIndiceActivo((prevIndice) => (prevIndice === 0 ? imagenes.length - 1 : prevIndice - 1));
     };
 
-    const handleNext = () => {
-        setActiveIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+    const manejarSiguiente = () => {
+        setIndiceActivo((prevIndice) => (prevIndice === imagenes.length - 1 ? 0 : prevIndice + 1));
     };
 
     return (
-        <div id="default-carousel" className="relative w-full" data-carousel="slide">
+        <div id="carrusel-default" className="relative w-full" data-carousel="slide">
             <div className="relative h-72 md:h-96 overflow-hidden rounded-lg">
-                {images.map((image, index) => (
+                {imagenes.map((imagen, indice) => (
                     <div
-                        key={index}
+                        key={indice}
                         className={`absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover ${
-                            index === activeIndex ? 'block' : 'hidden'
+                            indice === indiceActivo ? 'block' : 'hidden'
                         } duration-700 ease-in-out`}
                         data-carousel-item
                     >
                         <img
-                            src={image}
+                            src={imagen}
                             className="block w-full h-full object-contain"
-                            alt={`Slide ${index + 1}`}
+                            alt={`Slide ${indice + 1}`}
                         />
                     </div>
                 ))}
             </div>
             <div className="absolute flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-                {images.map((_, index) => (
+                {imagenes.map((_, indice) => (
                     <button
-                        key={index}
+                        key={indice}
                         type="button"
-                        className={`w-3 h-3 rounded-full ${index === activeIndex ? 'bg-custom-azul' : 'bg-gray-300'}`}
-                        aria-current={index === activeIndex}
-                        aria-label={`Slide ${index + 1}`}
-                        onClick={() => setActiveIndex(index)}
-                        data-carousel-slide-to={index}
+                        className={`w-3 h-3 rounded-full ${indice === indiceActivo ? 'bg-custom-azul' : 'bg-gray-300'}`}
+                        aria-current={indice === indiceActivo}
+                        aria-label={`Slide ${indice + 1}`}
+                        onClick={() => setIndiceActivo(indice)}
+                        data-carousel-slide-to={indice}
                     ></button>
                 ))}
             </div>
             <button
                 type="button"
                 className="absolute top-0 left-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                onClick={handlePrev}
+                onClick={manejarPrevio}
                 data-carousel-prev
             >
                 <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
@@ -59,13 +59,13 @@ const Carrousel = ({ images = [] }) => {
                     >
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
                     </svg>
-                    <span className="sr-only">Previous</span>
+                    <span className="sr-only">Anterior</span>
                 </span>
             </button>
             <button
                 type="button"
                 className="absolute top-0 right-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                onClick={handleNext}
+                onClick={manejarSiguiente}
                 data-carousel-next
             >
                 <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
@@ -78,11 +78,11 @@ const Carrousel = ({ images = [] }) => {
                     >
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                     </svg>
-                    <span className="sr-only">Next</span>
+                    <span className="sr-only">Siguiente</span>
                 </span>
             </button>
         </div>
     );
 };
 
-export default Carrousel;
+export default Carrusel;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { cancelarPedido } from '../apis/Api';
 
-const UsuarioPedidos = ({ pedidos, setPedidos }) => {
-    const handleCancelar = async (pedidoId) => {
+const PedidosUsuario = ({ pedidos, setPedidos }) => {
+    const manejarCancelar = async (pedidoId) => {
         try {
             await cancelarPedido(pedidoId);
             setPedidos((prevPedidos) =>
@@ -38,7 +38,7 @@ const UsuarioPedidos = ({ pedidos, setPedidos }) => {
                             <td className="py-2 px-4 border-b text-center">
                                 {pedido.estado_pedido !== 'enviado' && pedido.estado_pedido !== 'entregado' && pedido.estado_pedido !== 'cancelado' && (
                                     <button
-                                        onClick={() => handleCancelar(pedido.id)}
+                                        onClick={() => manejarCancelar(pedido.id)}
                                         className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
                                     >
                                         Cancelar
@@ -53,4 +53,4 @@ const UsuarioPedidos = ({ pedidos, setPedidos }) => {
     );
 };
 
-export default UsuarioPedidos;
+export default PedidosUsuario;

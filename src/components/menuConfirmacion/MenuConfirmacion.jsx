@@ -1,5 +1,5 @@
-const ConfirmModal = ({ show, onClose, onConfirm }) => {
-    if (!show) return null;
+const ModalConfirmacion = ({ mostrar, onCerrar, onConfirmar }) => {
+    if (!mostrar) return null;
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -8,13 +8,13 @@ const ConfirmModal = ({ show, onClose, onConfirm }) => {
                 <p className="mb-4">¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.</p>
                 <div className="flex justify-end">
                     <button
-                        onClick={onClose}
+                        onClick={onCerrar}
                         className="text-gray-700 bg-gray-300 px-4 py-2 rounded-md mr-2 hover:bg-gray-400 transition duration-300"
                     >
                         Cancelar
                     </button>
                     <button
-                        onClick={onConfirm}
+                        onClick={onConfirmar}
                         className="text-white bg-red-600 px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
                     >
                         Eliminar
@@ -25,4 +25,4 @@ const ConfirmModal = ({ show, onClose, onConfirm }) => {
     );
 };
 
-export default ConfirmModal;
+export default ModalConfirmacion;

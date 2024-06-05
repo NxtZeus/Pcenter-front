@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { realizarBusqueda } from "../apis/Api";
 
-const SearchBar = ({ handleSearch }) => {
+const BarraBusqueda = ({ handleSearch }) => {
     const [query, setQuery] = useState('');
     const navigate = useNavigate();
 
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await handleSearch(query);
+            const response = await realizarBusqueda(query);
             console.log('Resultados de la búsqueda:', response);
-            navigate('/productos', { state: { results: response } });
+            navigate('/productos', { state: { resultados: response } });
         } catch (error) {
             console.error('Error al buscar productos:', error);
         }
@@ -47,4 +48,4 @@ const SearchBar = ({ handleSearch }) => {
     );
 };
 
-export default SearchBar;
+export default BarraBusqueda;

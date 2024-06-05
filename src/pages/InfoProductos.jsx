@@ -1,22 +1,21 @@
-// infoproducto.jsx
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchProductos } from '../components/apis/Api';
-import Carrousel from '../carrousel/Carrousel';
+import { obtenerProductos } from '../components/apis/Api';
+import Carrousel from '../components/carrousel/Carrousel';
 import { agregarItemAlCarrito } from '../components/logic/FuncCarrito';
 import { useCarrito } from '../components/carritoContext/CarritoContext';
 
 const InfoProducto = () => {
     const { id } = useParams();
     const [producto, setProducto] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const { itemsCarrito, setItemsCarrito } = useCarrito(); // Obtener el estado del carrito del contexto
 
     useEffect(() => {
-        const fetchProducto = async () => {
+        const obtenerProducto = async () => {
             try {
-                const productos = await fetchProductos();
+                const productos = await obtenerProductos();
                 const productoEncontrado = productos.find(p => p.id === parseInt(id));
                 if (productoEncontrado) {
                     setProducto(productoEncontrado);
@@ -26,14 +25,14 @@ const InfoProducto = () => {
             } catch (error) {
                 setError('Error al obtener el producto.');
             } finally {
-                setLoading(false);
+                setCargando(false);
             }
         };
 
-        fetchProducto();
+        obtenerProducto();
     }, [id]);
 
-    const handleAddToCart = async () => {
+    const manejarAgregarAlCarrito = async () => {
         if (producto) {
             try {
                 await agregarItemAlCarrito(producto.id, setItemsCarrito);
@@ -44,8 +43,8 @@ const InfoProducto = () => {
         }
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
+    if (cargando) {
+        return <div>Cargando...</div>;
     }
 
     if (error) {
@@ -64,14 +63,14 @@ const InfoProducto = () => {
         <div className="max-w-6xl mx-auto px-4 py-6">
             <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
                 <div className="grid gap-4">
-                    <Carrousel images={imagenes} />
+                    <Carrousel imagenes={imagenes} />
                     <div className="flex justify-between items-center">
                         <h1 className="text-2xl font-bold">{producto.nombre_producto}</h1>
                         <div className="text-4xl font-bold">{producto.precio}€</div>
                     </div>
                     <button
                         className="w-full bg-custom-azul px-4 py-2 rounded-md hover:bg-custom-naranja transition duration-300 mt-4 text-white"
-                        onClick={handleAddToCart}
+                        onClick={manejarAgregarAlCarrito}
                     >
                         Añadir al carrito
                     </button>

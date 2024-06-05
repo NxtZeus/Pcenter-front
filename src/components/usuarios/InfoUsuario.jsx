@@ -1,9 +1,9 @@
 import { useState, useContext } from 'react';
-import { deleteUsuario } from '../apis/Api';
+import { eliminarUsuario } from '../apis/Api';
 import { AuthContext } from '../auth/AuthContext';
-import ConfirmModal from '../confirmmenu/ConfirmMenu';
+import ModalConfirmacion from '../menuConfirmacion/MenuConfirmacion';
 
-const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
+const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
     const [formData, setFormData] = useState({
         nombre: usuario.first_name || '',
         apellido: usuario.last_name || '',
@@ -18,9 +18,9 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
     });
 
     const { logout } = useContext(AuthContext);
-    const [changePassword, setChangePassword] = useState(false);
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [cambiarContrasena, setCambiarContrasena] = useState(false);
+    const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false);
+    const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,13 +31,13 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
     };
 
     const handleCheckboxChange = (e) => {
-        setChangePassword(e.target.checked);
+        setCambiarContrasena(e.target.checked);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { current_password, new_password, ...updateData } = formData;
-        if (changePassword && current_password && new_password) {
+        if (cambiarContrasena && current_password && new_password) {
             updateData.password = new_password;
         }
         // Mapear los nombres de los campos al formato que espera el backend
@@ -54,14 +54,14 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
         if (updateData.password) {
             backendData.password = updateData.password;
         }
-        await onUpdateUsuario(backendData);
-        setShowSuccessMessage(true);
-        setTimeout(() => setShowSuccessMessage(false), 3000);  // Mensaje de éxito desaparece después de 3 segundos
+        await onActualizarUsuario(backendData);
+        setMostrarMensajeExito(true);
+        setTimeout(() => setMostrarMensajeExito(false), 3000);  // Mensaje de éxito desaparece después de 3 segundos
     };
 
-    const handleDeleteAccount = async () => {
+    const handleEliminarCuenta = async () => {
         try {
-            await deleteUsuario();
+            await eliminarUsuario();
             logout();  // Cerrar sesión después de eliminar la cuenta
             alert("Cuenta eliminada con éxito.");
         } catch (error) {
@@ -73,7 +73,7 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
     return (
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <h2 className="text-2xl font-bold mb-4">Información del Usuario</h2>
-            {showSuccessMessage && (
+            {mostrarMensajeExito && (
                 <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                     <span className="block sm:inline">Los cambios se han guardado correctamente.</span>
                 </div>
@@ -106,13 +106,13 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
                             <input
                                 type="checkbox"
                                 className="form-checkbox"
-                                checked={changePassword}
+                                checked={cambiarContrasena}
                                 onChange={handleCheckboxChange}
                             />
                             <span className="ml-2">Cambiar Contraseña</span>
                         </label>
                     </div>
-                    {changePassword && (
+                    {cambiarContrasena && (
                         <>
                             <div className="mb-4 col-span-1 md:col-span-2">
                                 <label htmlFor="current_password" className="block text-gray-700 font-medium mb-2">
@@ -152,20 +152,20 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
                     </button>
                     <button
                         type="button"
-                        onClick={() => setShowConfirmModal(true)}
+                        onClick={() => setMostrarModalConfirmacion(true)}
                         className="text-white bg-red-600 px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
                     >
                         Eliminar Cuenta
                     </button>
                 </div>
             </form>
-            <ConfirmModal
-                show={showConfirmModal}
-                onClose={() => setShowConfirmModal(false)}
-                onConfirm={handleDeleteAccount}
+            <ModalConfirmacion
+                show={mostrarModalConfirmacion}
+                onClose={() => setMostrarModalConfirmacion(false)}
+                onConfirm={handleEliminarCuenta}
             />
         </div>
     );
 };
 
-export default UsuarioInfo;
+export default InfoUsuario;

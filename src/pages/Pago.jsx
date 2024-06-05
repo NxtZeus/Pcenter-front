@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCarrito } from '../components/carritoContext/CarritoContext';
-import { getUsuario, pagar } from '../components/apis/Api';
-import TruncatedText from '../components/truncarTexto/TruncarTexto';
-import { handleDecrementItem, handleIncrementItem, handleEliminarItem } from '../components/logic/FuncCarrito';
+import { obtenerUsuario, pagar } from '../components/apis/Api';
+import TruncarTexto from '../components/truncarTexto/TruncarTexto';
 
 const PasarelaPago = () => {
     const { itemsCarrito = [], setItemsCarrito } = useCarrito(); // Asegúrate de que itemsCarrito sea un array
     const [usuario, setUsuario] = useState({});
     const [metodoPago, setMetodoPago] = useState('tarjeta_credito');
     const [mensajeExito, setMensajeExito] = useState('');
+    const [numeroTarjeta, setNumeroTarjeta] = useState('');
+    const [fechaExpiracion, setFechaExpiracion] = useState('');
+    const [codigoCVV, setCodigoCVV] = useState('');
+    const [errorTarjeta, setErrorTarjeta] = useState('');
     const navigate = useNavigate();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -18,7 +21,7 @@ const PasarelaPago = () => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const data = await getUsuario(token);
+                    const data = await obtenerUsuario(token);
                     setUsuario(data);
                 }
             } catch (error) {
@@ -34,11 +37,19 @@ const PasarelaPago = () => {
     }, []);
 
     const handlePago = async () => {
+        if (metodoPago === 'tarjeta_credito' && !validarTarjetaCredito()) {
+            setErrorTarjeta('Por favor, introduzca los datos correctos de la tarjeta.');
+            return;
+        }
+
         try {
             await pagar({
                 direccion_envio: formatAddress(usuario),
                 direccion_facturacion: formatAddress(usuario),
-                metodo_pago: metodoPago
+                metodo_pago: metodoPago,
+                numero_tarjeta: metodoPago === 'tarjeta_credito' ? numeroTarjeta : null,
+                fecha_expiracion: metodoPago === 'tarjeta_credito' ? fechaExpiracion : null,
+                codigo_cvv: metodoPago === 'tarjeta_credito' ? codigoCVV : null
             });
             setItemsCarrito([]);
             setMensajeExito('Pedido realizado correctamente');
@@ -49,6 +60,18 @@ const PasarelaPago = () => {
             console.error('Error al procesar el pago:', error);
             alert('Hubo un problema al procesar el pago. Inténtalo de nuevo.');
         }
+    };
+
+    const validarTarjetaCredito = () => {
+        const regexNumeroTarjeta = /^[0-9]{16}$/;
+        const regexFechaExpiracion = /^(0[1-9]|1[0-2])\/[0-9]{2}$/; // MM/YY
+        const regexCVV = /^[0-9]{3,4}$/;
+
+        return (
+            regexNumeroTarjeta.test(numeroTarjeta) &&
+            regexFechaExpiracion.test(fechaExpiracion) &&
+            regexCVV.test(codigoCVV)
+        );
     };
 
     const formatAddress = (usuario) => {
@@ -76,9 +99,9 @@ const PasarelaPago = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-5xl flex">
-                <div className="w-1/2 pr-4">
+        <div className="flex flex-col items-center justify-center min-h-full bg-gray-100 py-12">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-5xl flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 pr-0 md:pr-4 mb-8 md:mb-0">
                     <h2 className="text-3xl font-bold mb-6 text-custom-azul">Pasarela de Pago</h2>
 
                     {mensajeExito && (
@@ -116,15 +139,43 @@ const PasarelaPago = () => {
                             <option value="efectivo">Efectivo</option>
                         </select>
                     </div>
+                    {metodoPago === 'tarjeta_credito' && (
+                        <div className="mt-6">
+                            <label className="block text-gray-700 text-sm font-semibold mb-2">Número de Tarjeta:</label>
+                            <input
+                                type="text"
+                                value={numeroTarjeta}
+                                onChange={(e) => setNumeroTarjeta(e.target.value)}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-azul"
+                                maxLength="16"
+                                placeholder="1234 5678 9123 4567"
+                            />
+                            <label className="block text-gray-700 text-sm font-semibold mb-2 mt-4">Fecha de Expiración (MM/YY):</label>
+                            <input
+                                type="text"
+                                value={fechaExpiracion}
+                                onChange={(e) => setFechaExpiracion(e.target.value)}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-azul"
+                                maxLength="5"
+                                placeholder="MM/YY"
+                            />
+                            <label className="block text-gray-700 text-sm font-semibold mb-2 mt-4">Código CVV:</label>
+                            <input
+                                type="text"
+                                value={codigoCVV}
+                                onChange={(e) => setCodigoCVV(e.target.value)}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-azul"
+                                maxLength="4"
+                                placeholder="123"
+                            />
+                            {errorTarjeta && (
+                                <p className="text-red-500 text-sm mt-2">{errorTarjeta}</p>
+                            )}
+                        </div>
+                    )}
                     
-                    <button 
-                        onClick={handlePago} 
-                        className="bg-custom-naranja text-black px-4 py-2 rounded-md w-full hover:bg-orange-500 transition duration-300"
-                    >
-                        Realizar Pago
-                    </button>
                 </div>
-                <div className="w-1/2 pl-4">
+                <div className="w-full md:w-1/2 pl-0 md:pl-4">
                     <h2 className="text-3xl font-bold mb-6 text-custom-azul">Resumen del Carrito</h2>
                     <ul>
                         {itemsCarrito.map(item => (
@@ -133,7 +184,7 @@ const PasarelaPago = () => {
                                     <img src={getImageUrl(item.producto.imagenes[0]?.imagen)} alt={item.producto.nombre_producto} className="w-12 h-12 object-cover rounded-md" />
                                     <div className="flex-1">
                                         <p className="whitespace-normal md:whitespace-nowrap">
-                                            <TruncatedText text={item.producto.nombre_producto} maxLength={getMaxLength(windowWidth)} />
+                                            <TruncarTexto text={item.producto.nombre_producto} maxLength={getMaxLength(windowWidth)} />
                                         </p>
                                         <p className="text-sm text-gray-600">{item.producto.precio}€ x {item.cantidad}</p>
                                     </div>
@@ -144,6 +195,12 @@ const PasarelaPago = () => {
                     <div className="mt-6 text-right">
                         <p className="text-xl font-semibold">Total: {precioTotal.toFixed(2)}€</p>
                     </div>
+                    <button 
+                        onClick={handlePago} 
+                        className="bg-custom-naranja text-black px-4 py-2 rounded-md w-full hover:bg-orange-500 transition duration-300 self-end mt-6"
+                    >
+                        Realizar Pago
+                    </button>
                 </div>
             </div>
         </div>
