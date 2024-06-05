@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { deleteUsuario } from '../apis/Api';
+import { AuthContext } from '../auth/AuthContext';
+import ConfirmModal from '../confirmmenu/ConfirmMenu';
 
 const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
     const [formData, setFormData] = useState({
@@ -14,8 +17,10 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
         new_password: ''
     });
 
+    const { logout } = useContext(AuthContext);
     const [changePassword, setChangePassword] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -52,6 +57,17 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
         await onUpdateUsuario(backendData);
         setShowSuccessMessage(true);
         setTimeout(() => setShowSuccessMessage(false), 3000);  // Mensaje de éxito desaparece después de 3 segundos
+    };
+
+    const handleDeleteAccount = async () => {
+        try {
+            await deleteUsuario();
+            logout();  // Cerrar sesión después de eliminar la cuenta
+            alert("Cuenta eliminada con éxito.");
+        } catch (error) {
+            console.error('Error al eliminar la cuenta:', error);
+            alert("Hubo un error al eliminar la cuenta. Por favor, inténtalo de nuevo.");
+        }
     };
 
     return (
@@ -127,13 +143,27 @@ const UsuarioInfo = ({ usuario, onUpdateUsuario }) => {
                         </>
                     )}
                 </div>
-                <button
-                    type="submit"
-                    className="text-white bg-custom-azul px-4 py-2 rounded-md hover:bg-custom-naranja transition duration-300"
-                >
-                    Guardar
-                </button>
+                <div className="flex justify-between">
+                    <button
+                        type="submit"
+                        className="text-white bg-custom-azul px-4 py-2 rounded-md hover:bg-custom-naranja transition duration-300"
+                    >
+                        Guardar
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setShowConfirmModal(true)}
+                        className="text-white bg-red-600 px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
+                    >
+                        Eliminar Cuenta
+                    </button>
+                </div>
             </form>
+            <ConfirmModal
+                show={showConfirmModal}
+                onClose={() => setShowConfirmModal(false)}
+                onConfirm={handleDeleteAccount}
+            />
         </div>
     );
 };

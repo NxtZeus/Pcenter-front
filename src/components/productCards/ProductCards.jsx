@@ -10,7 +10,7 @@ function ProductCard({ producto, onAddToCart }) {
             <div className='p-4'>
                 <h2 className="text-lg font-bold text-custom-azul"><TruncatedText text={producto.nombre_producto} maxLength={50} /></h2>
                 <p className="text-lg text-right font-semibold mt-4 text-custom-azul">{producto.precio}€</p>
-                <Link to={`/producto/${producto.id}`}>
+                <Link to={`/producto/${producto.id}`} >
                     <button className="bg-custom-azul px-4 py-2 rounded-md hover:bg-custom-naranja transition duration-300 mt-4">
                         <p className="text-white">Ver más</p>
                     </button>

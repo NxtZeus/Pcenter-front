@@ -29,6 +29,15 @@ export const updateUsuario = async (data) => {
     }
 };
 
+export const deleteUsuario = async () => {
+    try {
+        const response = await axios.delete(`${API_URL}/usuarios/detalles/`, getAuthHeaders());
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const fetchProductos = async () => {
     try {
         const response = await axios.get(`${API_URL}/productos/`);

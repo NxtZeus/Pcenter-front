@@ -15,9 +15,28 @@ export default function Registro() {
     const [codigoPostal, setCodigoPostal] = useState('');
     const [telefono, setTelefono] = useState('');
 
+    const validatePassword = (password) => {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+            return 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial';
+        }
+        return null;
+    };
+
     const handleRegistro = async (e) => {
         e.preventDefault();
         setError(null);
+
+        const passwordError = validatePassword(password);
+        if (passwordError) {
+            setError(passwordError);
+            return;
+        }
 
         if (password !== confirmPassword) {
             setError('Las contraseñas no coinciden');
@@ -58,10 +77,15 @@ export default function Registro() {
             <div className="bg-gradient-to-r from-black to-custom-azul rounded-[26px] m-4 w-full max-w-4xl">
                 <div className="border-[20px] border-transparent rounded-[20px] bg-white shadow-lg p-6 md:p-10 m-2">
                     <h1 className="pt-8 pb-6 text-custom-azul font-bold text-5xl text-center">Registrarse</h1>
+                    {successMessage && (
+                        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                            <span className="block sm:inline">Registrado correctamente.</span>
+                        </div>
+                    )}
+                    {error && 
+                        <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">{error}</p>
+                    }
                     <form onSubmit={handleRegistro} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {error && <p className="text-red-500 text-sm mb-2 col-span-1 md:col-span-2">{error}</p>}
-                        {successMessage && <p className="text-green-500 text-sm mb-2 col-span-1 md:col-span-2">{successMessage}</p>}
-                        
                         <div>
                             <label htmlFor="nombre" className="block mb-2 text-lg">Nombre</label>
                             <input
@@ -181,7 +205,7 @@ export default function Registro() {
                             </button>
                         </div>
                     </form>
-                    <div className="flex flex-col mt-4 items-center justify-center text-sm col-span-1 md:col-span-2">
+                    <div className="flex flex-col mt-4 items-center justify-center text-md col-span-1 md:col-span-2">
                         <h3>
                             <span className="cursor-default">¿Ya tienes una cuenta?</span>
                             <a
@@ -195,23 +219,6 @@ export default function Registro() {
                                 </span>
                             </a>
                         </h3>
-                    </div>
-
-                    <div className="text-gray-500 flex text-center flex-col mt-4 items-center text-sm col-span-1 md:col-span-2">
-                        <p className="cursor-default">
-                            Al registrarte, aceptas nuestros
-                            <a className="group text-custom-azul transition-all duration-100 ease-in-out" href="#">
-                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-custom-azul to-custom-azul bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                                    Términos
-                                </span>
-                            </a>
-                            y
-                            <a className="group text-custom-azul transition-all duration-100 ease-in-out" href="#">
-                                <span className="cursor-pointer bg-left-bottom bg-gradient-to-r from-custom-azul to-custom-azul bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                                    Política de Privacidad
-                                </span>
-                            </a>
-                        </p>
                     </div>
                 </div>
             </div>

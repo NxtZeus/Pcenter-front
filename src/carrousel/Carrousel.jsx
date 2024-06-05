@@ -35,7 +35,7 @@ const Carrousel = ({ images = [] }) => {
                     <button
                         key={index}
                         type="button"
-                        className={`w-3 h-3 rounded-full ${index === activeIndex ? 'bg-blue-600' : 'bg-white'}`}
+                        className={`w-3 h-3 rounded-full ${index === activeIndex ? 'bg-custom-azul' : 'bg-gray-300'}`}
                         aria-current={index === activeIndex}
                         aria-label={`Slide ${index + 1}`}
                         onClick={() => setActiveIndex(index)}

@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
     const fetchUserDetails = async (token) => {
         try {
             const user = await getUsuario(token);
-            console.log('Fetched user details:', user);
             setIsSuperuser(user.is_superuser);
             setFirstNombre(user.first_name);
         } catch (error) {
@@ -43,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout, isSuperuser, firstNombre }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, login, logout, isSuperuser, firstNombre }}>
             {children}
         </AuthContext.Provider>
     );
