@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 
 const Carrusel = ({ imagenes = [] }) => {
+    // Estado para mantener el índice de la imagen activa
     const [indiceActivo, setIndiceActivo] = useState(0);
 
+    // Función para manejar el clic en el botón "Anterior"
     const manejarPrevio = () => {
         setIndiceActivo((prevIndice) => (prevIndice === 0 ? imagenes.length - 1 : prevIndice - 1));
     };
 
+    // Función para manejar el clic en el botón "Siguiente"
     const manejarSiguiente = () => {
         setIndiceActivo((prevIndice) => (prevIndice === imagenes.length - 1 ? 0 : prevIndice + 1));
     };
 
     return (
         <div id="carrusel-default" className="relative w-full" data-carousel="slide">
+            {/* Contenedor de las imágenes del carrusel */}
             <div className="relative h-72 md:h-96 overflow-hidden rounded-lg">
                 {imagenes.map((imagen, indice) => (
                     <div
@@ -30,6 +34,7 @@ const Carrusel = ({ imagenes = [] }) => {
                     </div>
                 ))}
             </div>
+            {/* Indicadores del carrusel */}
             <div className="absolute flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
                 {imagenes.map((_, indice) => (
                     <button
@@ -43,6 +48,7 @@ const Carrusel = ({ imagenes = [] }) => {
                     ></button>
                 ))}
             </div>
+            {/* Botón "Anterior" */}
             <button
                 type="button"
                 className="absolute top-0 left-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
@@ -62,6 +68,7 @@ const Carrusel = ({ imagenes = [] }) => {
                     <span className="sr-only">Anterior</span>
                 </span>
             </button>
+            {/* Botón "Siguiente" */}
             <button
                 type="button"
                 className="absolute top-0 right-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"

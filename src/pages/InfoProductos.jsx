@@ -6,12 +6,18 @@ import { agregarItemAlCarrito } from '../components/logic/FuncCarrito';
 import { useCarrito } from '../components/carritoContext/CarritoContext';
 
 const InfoProducto = () => {
+    // Obtiene el ID del producto desde los parámetros de la URL usando el hook useParams
     const { id } = useParams();
+    
+    // Estados para manejar el producto, el estado de carga y los errores al obtener el producto desde la API del servidor 
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-    const { itemsCarrito, setItemsCarrito } = useCarrito(); // Obtener el estado del carrito del contexto
+    
+    // Obtener el estado del carrito del contexto del carrito y la función para actualizar el estado del carrito
+    const { itemsCarrito, setItemsCarrito } = useCarrito();
 
+    // Efecto para obtener los detalles del producto al cargar el componente y actualizar el estado del producto, el estado de carga y los errores en consecuencia al obtener el producto desde la API del servidor
     useEffect(() => {
         const obtenerProducto = async () => {
             try {
@@ -32,6 +38,7 @@ const InfoProducto = () => {
         obtenerProducto();
     }, [id]);
 
+    // Función para manejar la adición del producto al carrito y actualizar el estado del carrito en el contexto del carrito
     const manejarAgregarAlCarrito = async () => {
         if (producto) {
             try {
@@ -43,17 +50,20 @@ const InfoProducto = () => {
         }
     };
 
+    // Mostrar un mensaje de carga mientras se obtiene el producto
     if (cargando) {
         return <div>Cargando...</div>;
     }
 
+    // Mostrar un mensaje de error si ocurre un error al obtener el producto
     if (error) {
         return <div>{error}</div>;
     }
 
-    const imagenes = producto.imagenes ? producto.imagenes.map(img => img.imagen) : []; // Asegúrate de mapear las URLs de las imágenes correctamente
+    // Obtener las URL de las imágenes del producto o establecer un array vacío si no hay imágenes
+    const imagenes = producto.imagenes ? producto.imagenes.map(img => img.imagen) : [];
 
-    // Formatear especificaciones
+    // Formatear especificaciones del producto en un array de objetos con claves y valores para mostrar en la interfaz de usuario
     const especificaciones = producto.especificaciones.split('\n').map((item) => {
         const [key, value] = item.split(': ');
         return { key, value };
@@ -63,6 +73,7 @@ const InfoProducto = () => {
         <div className="max-w-6xl mx-auto px-4 py-6">
             <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start">
                 <div className="grid gap-4">
+                    {/* Carrusel de imágenes del producto */}
                     <Carrousel imagenes={imagenes} />
                     <div className="flex justify-between items-center">
                         <h1 className="text-2xl font-bold">{producto.nombre_producto}</h1>

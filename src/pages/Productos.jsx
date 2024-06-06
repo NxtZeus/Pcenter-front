@@ -6,6 +6,7 @@ import { useCarrito } from '../components/carritoContext/CarritoContext';
 import { useLocation } from 'react-router-dom';
 
 const Productos = () => {
+    // Estados para manejar productos, categorías, categoría seleccionada y resultados de búsqueda
     const [productos, setProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
@@ -13,6 +14,7 @@ const Productos = () => {
     const location = useLocation();
     const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
 
+    // Efecto para obtener productos y categorías al montar el componente y actualizar los estados de productos y categorías con los datos obtenidos
     useEffect(() => {
         const obtenerDatosProductos = async () => {
             try {
@@ -38,6 +40,7 @@ const Productos = () => {
         obtenerDatosCategorias();
     }, []);
 
+    // Efecto para manejar cambios en el estado de la ubicación y actualizar los resultados de búsqueda y la categoría seleccionada
     useEffect(() => {
         if (location.state?.resultados) {
             setResultadosBusqueda(location.state.resultados);
@@ -48,22 +51,27 @@ const Productos = () => {
         }
     }, [location.state]);
 
+    // Función para manejar el cambio de categoría y limpiar los resultados de búsqueda
     const manejarCambioCategoria = (event) => {
         setCategoriaSeleccionada(event.target.value);
         setResultadosBusqueda([]);
     };
 
+    // Función para normalizar cadenas de texto (eliminar acentos) y compararlas en minúsculas
     const normalizarString = (str) => {
         return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     };
 
+    // Filtra los productos según la categoría seleccionada
     const productosFiltradosPorCategoria = categoriaSeleccionada
         ? productos.filter(producto =>
             normalizarString(producto.categoria).toLowerCase() === normalizarString(categoriaSeleccionada).toLowerCase())
         : productos;
 
+    // Determina qué productos mostrar (filtrados o resultados de búsqueda)
     const productosAMostrar = resultadosBusqueda.length > 0 ? resultadosBusqueda : productosFiltradosPorCategoria;
 
+    // Función para manejar la adición de un producto al carrito y actualizar el estado del carrito con el nuevo item añadido
     const manejarAgregarAlCarrito = async (productoId) => {
         try {
             await agregarItemAlCarrito(productoId, setItemsCarrito);

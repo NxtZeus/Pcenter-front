@@ -2,14 +2,15 @@ import React from 'react';
 import { cancelarPedido } from '../apis/Api';
 
 const PedidosUsuario = ({ pedidos, setPedidos }) => {
+    // Función para manejar la cancelación de un pedido por parte del usuario y actualizar el estado de los pedidos en la base de datos y en la interfaz de usuario
     const manejarCancelar = async (pedidoId) => {
         try {
-            await cancelarPedido(pedidoId);
+            await cancelarPedido(pedidoId); // Llama a la API para cancelar el pedido con el ID especificado en la base de datos del servidor y espera a que la operación se complete con éxito antes de continuar con la siguiente instrucción
             setPedidos((prevPedidos) =>
                 prevPedidos.map((pedido) =>
                     pedido.id === pedidoId ? { ...pedido, estado_pedido: 'cancelado' } : pedido
                 )
-            );
+            ); // Actualiza el estado de los pedidos para reflejar la cancelación del pedido con el ID especificado en la lista de pedidos del usuario en la interfaz de usuario
         } catch (error) {
             console.error('Error al cancelar el pedido:', error);
         }

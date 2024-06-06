@@ -2,22 +2,28 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import TextoTruncado from '../truncarTexto/TruncarTexto';
 
+// Componente del carrito de compras que muestra los productos añadidos al carrito y permite eliminarlos, incrementar o decrementar la cantidad de los productos y tramitar el pedido
 const Carrito = ({ onCerrar, onEliminarItem, onIncrementarItem, onDecrementarItem, items }) => {
+    // Estado para manejar errores en el carrito de compras
     const [error, setError] = useState(null);
+    // Estado para manejar el ancho de la ventana del navegador
     const [anchoVentana, setAnchoVentana] = useState(window.innerWidth);
 
+    // Efecto para actualizar el ancho de la ventana al redimensionar la ventana del navegador
     useEffect(() => {
         const manejarRedimension = () => setAnchoVentana(window.innerWidth);
         window.addEventListener('resize', manejarRedimension);
         return () => window.removeEventListener('resize', manejarRedimension);
     }, []);
 
+    // Calcular el precio total de los items en el carrito de compras 
     const precioTotal = items.reduce((total, item) => total + parseFloat(item.producto.precio) * item.cantidad, 0);
 
+    // Obtener la URL de la imagen del producto o una imagen por defecto si no hay URL o es null o undefined
     const obtenerUrlImagen = (url) => {
         const URLbase = 'http://127.0.0.1:8000';
         if (!url) {
-            return `${URLbase}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined
+            return `${URLbase}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined o null
         }
         if (url.startsWith(URLbase)) {
             return url;
@@ -25,6 +31,7 @@ const Carrito = ({ onCerrar, onEliminarItem, onIncrementarItem, onDecrementarIte
         return `${URLbase}${url}`;
     };
 
+    // Obtener la longitud máxima del texto según el ancho de la ventana para truncar el texto si es necesario en el carrito de compras
     const obtenerMaxLongitud = (ancho) => {
         if (ancho < 1025) return 25;
         if (ancho < 1441) return 30;

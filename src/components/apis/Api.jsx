@@ -1,12 +1,15 @@
 import axios from 'axios';
 
+// URL base de la API
 const URL_API = 'http://127.0.0.1:8000/api';
 
+// Función para obtener los encabezados de autenticación usando el token almacenado en localStorage
 const obtenerHeadersAuth = () => {
     const token = localStorage.getItem('token');
     return { headers: { 'Authorization': `Token ${token}` } };
 };
 
+// Función para obtener los detalles del usuario autenticado
 export const obtenerUsuario = async (token) => {
     try {
         const respuesta = await axios.get(`${URL_API}/usuarios/detalles/`, {
@@ -20,6 +23,7 @@ export const obtenerUsuario = async (token) => {
     }
 };
 
+// Función para actualizar la información del usuario autenticado
 export const actualizarUsuario = async (datos) => {
     try {
         const respuesta = await axios.put(`${URL_API}/usuarios/detalles/`, datos, obtenerHeadersAuth());
@@ -29,6 +33,7 @@ export const actualizarUsuario = async (datos) => {
     }
 };
 
+// Función para eliminar la cuenta del usuario autenticado
 export const eliminarUsuario = async () => {
     try {
         const respuesta = await axios.delete(`${URL_API}/usuarios/detalles/`, obtenerHeadersAuth());
@@ -38,6 +43,7 @@ export const eliminarUsuario = async () => {
     }
 };
 
+// Función para obtener la lista de productos
 export const obtenerProductos = async () => {
     try {
         const respuesta = await axios.get(`${URL_API}/productos/`);
@@ -48,6 +54,7 @@ export const obtenerProductos = async () => {
     }
 };
 
+// Función para realizar una búsqueda de productos
 export const realizarBusqueda = async (consulta) => {
     try {
         const respuesta = await axios.get(`${URL_API}/search/?search=${consulta}`);
@@ -58,6 +65,7 @@ export const realizarBusqueda = async (consulta) => {
     }
 };
 
+// Función para obtener la lista de categorías de productos
 export const obtenerCategorias = async () => {
     try {
         const respuesta = await axios.get(`${URL_API}/categorias/`);
@@ -85,6 +93,7 @@ export const obtenerCategorias = async () => {
     }
 };
 
+// Función para obtener el carrito de compras del usuario autenticado
 export const obtenerCarrito = async () => {
     try {
         const respuesta = await axios.get(`${URL_API}/ver-carrito/`, obtenerHeadersAuth());
@@ -94,6 +103,7 @@ export const obtenerCarrito = async () => {
     }
 };
 
+// Función para actualizar la cantidad de un item en el carrito de compras
 export const actualizarItemCarrito = async (productoId, cantidad) => {
     try {
         await axios.patch(`${URL_API}/actualizar-carrito/`, {
@@ -105,6 +115,7 @@ export const actualizarItemCarrito = async (productoId, cantidad) => {
     }
 };
 
+// Función para eliminar un item del carrito de compras
 export const eliminarItemCarrito = async (productoId) => {
     try {
         await axios.delete(`${URL_API}/eliminar-carrito/${productoId}/`, obtenerHeadersAuth());
@@ -113,6 +124,7 @@ export const eliminarItemCarrito = async (productoId) => {
     }
 };
 
+// Función para añadir un producto al carrito de compras
 export const añadirAlCarrito = async (productoId, setItemsCarrito) => {
     try {
         const respuesta = await axios.post(`${URL_API}/añadir-carrito/`, { producto_id: productoId, cantidad: 1 }, obtenerHeadersAuth());
@@ -122,6 +134,7 @@ export const añadirAlCarrito = async (productoId, setItemsCarrito) => {
     }
 };
 
+// Función para obtener los pedidos del usuario autenticado
 export const obtenerPedidos = async () => {
     try {
         const respuesta = await axios.get(`${URL_API}/usuario/pedidos/`, obtenerHeadersAuth());
@@ -131,6 +144,7 @@ export const obtenerPedidos = async () => {
     }
 };
 
+// Función para cancelar un pedido del usuario autenticado
 export const cancelarPedido = async (pedidoId) => {
     try {
         const respuesta = await axios.patch(`${URL_API}/pedidos/${pedidoId}/`, { estado_pedido: 'cancelado' }, obtenerHeadersAuth());
@@ -140,6 +154,7 @@ export const cancelarPedido = async (pedidoId) => {
     }
 };
 
+// Función para realizar el pago de una compra comprobando el token de autenticación 
 export const pagar = async (datos) => {
     try {
         const respuesta = await axios.post(`${URL_API}/pago/`, datos, obtenerHeadersAuth());

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 export default function Registro() {
+    // Estados para manejar los valores del formulario y los mensajes de error y éxito al registrarse
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,19 +17,22 @@ export default function Registro() {
     const [codigoPostal, setCodigoPostal] = useState('');
     const [telefono, setTelefono] = useState('');
 
+    // Función para validar la contraseña del usuario al registrarse
     const validatePassword = (password) => {
         const minLength = 8;
+        const maxLength = 30;
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumber = /[0-9]/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]-_/.test(password);
 
-        if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-            return 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial';
+        if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar || password.length > maxLength) {
+            return 'La contraseña debe tener al menos 8 caracteres y 30 de máximo, una mayúscula, una minúscula, un número y un carácter especial.';
         }
         return null;
     };
 
+    // Función para manejar el registro de usuario
     const handleRegistro = async (e) => {
         e.preventDefault();
         setError(null);
@@ -46,6 +51,7 @@ export default function Registro() {
         const urlRegistro = 'http://127.0.0.1:8000/api/registro/';
 
         try {
+            // Realizar la solicitud de registro a la API con los datos del formulario
             const response = await axios.post(urlRegistro, {
                 username: email,
                 email: email,
@@ -59,10 +65,12 @@ export default function Registro() {
                 telefono: telefono
             });
 
+            // Manejar la respuesta del servidor al registro de usuario exitoso o fallido
             if (response.status === 201) {
                 setSuccessMessage('¡Registro exitoso!');
                 setTimeout(() => {
                     setSuccessMessage(null);
+                    Navigate('/login'); // Redirigir al usuario a la página de inicio de sesión después de registrarse con éxito
                 }, 3000);
             } else {
                 setError(response.data.detail || 'Error al registrar usuario');

@@ -4,6 +4,7 @@ import { AuthContext } from '../auth/AuthContext';
 import ModalConfirmacion from '../menuConfirmacion/MenuConfirmacion';
 
 const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
+    // Estado para manejar los datos del formulario de usuario y actualizar la información del usuario en la base de datos y en el estado de la aplicación al enviar el formulario de usuario con los nuevos datos ingresados por el usuario
     const [formData, setFormData] = useState({
         nombre: usuario.first_name || '',
         apellido: usuario.last_name || '',
@@ -17,11 +18,15 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         new_password: ''
     });
 
+    // Contexto de autenticación para manejar el logout del usuario después de eliminar su cuenta con éxito
     const { logout } = useContext(AuthContext);
+    
+    // Estados para manejar la visibilidad de ciertos elementos y mensajes en la interfaz de usuario
     const [cambiarContrasena, setCambiarContrasena] = useState(false);
     const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false);
     const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
 
+    // Maneja los cambios en los inputs del formulario de usuario y actualiza el estado del formulario con los nuevos valores ingresados por el usuario
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -30,17 +35,19 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         }));
     };
 
+    // Maneja el cambio en el checkbox de "Cambiar Contraseña" para mostrar u ocultar los campos de contraseña en el formulario de usuario
     const handleCheckboxChange = (e) => {
         setCambiarContrasena(e.target.checked);
     };
 
+    // Maneja el envío del formulario para actualizar la información del usuario en la base de datos y en el estado de la aplicación
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { current_password, new_password, ...updateData } = formData;
         if (cambiarContrasena && current_password && new_password) {
             updateData.password = new_password;
         }
-        // Mapear los nombres de los campos al formato que espera el backend
+        // Mapear los nombres de los campos al formato que espera el backend para actualizar la información del usuario
         const backendData = {
             first_name: updateData.nombre,
             last_name: updateData.apellido,
@@ -59,10 +66,11 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         setTimeout(() => setMostrarMensajeExito(false), 3000);  // Mensaje de éxito desaparece después de 3 segundos
     };
 
+    // Maneja la eliminación de la cuenta del usuario
     const handleEliminarCuenta = async () => {
         try {
             await eliminarUsuario();
-            logout();  // Cerrar sesión después de eliminar la cuenta
+            logout();  // Cerrar sesión después de eliminar la cuenta del usuario con éxito
             alert("Cuenta eliminada con éxito.");
         } catch (error) {
             console.error('Error al eliminar la cuenta:', error);
@@ -160,9 +168,9 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
                 </div>
             </form>
             <ModalConfirmacion
-                show={mostrarModalConfirmacion}
-                onClose={() => setMostrarModalConfirmacion(false)}
-                onConfirm={handleEliminarCuenta}
+                mostrar={mostrarModalConfirmacion}
+                onCerrar={() => setMostrarModalConfirmacion(false)}
+                onConfirmar={handleEliminarCuenta}
             />
         </div>
     );
