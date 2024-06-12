@@ -88,7 +88,7 @@ function Header() {
                         <button onClick={() => setMenuCategoriasAbierto(!menuCategoriasAbierto)} className="text-white text-xl hover:text-custom-naranja transition duration-300">Categorías</button>
                         {/* Enlace al panel de administración si el usuario es superusuario */}
                         {esSuperusuario && (
-                            <a href="http://127.0.0.1:8000/admin/" target='_blank' className="bg-red-500 text-white text-xl px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Admin</a>
+                            <a href="https://tfg-backend-production-5a6a.up.railway.app/admin/" target='_blank' className="bg-red-500 text-white text-xl px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Admin</a>
                         )}
                     </nav>
                 </div>
