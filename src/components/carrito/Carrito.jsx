@@ -28,7 +28,7 @@ const Carrito = ({ onCerrar, onEliminarItem, onIncrementarItem, onDecrementarIte
         if (url.startsWith(URLbase)) {
             return url;
         }
-        return `${URLbase}${url}`;
+        return `${url}`;
     };
 
     // Obtener la longitud máxima del texto según el ancho de la ventana para truncar el texto si es necesario en el carrito de compras
