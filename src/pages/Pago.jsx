@@ -78,6 +78,7 @@ const PasarelaPago = () => {
                 codigo_cvv: metodoPago === 'tarjeta_credito' ? codigoCVV : null
             });
             setItemsCarrito([]); // Vaciar el carrito después de un pago exitoso para el usuario actual
+            setErrorTarjeta(null);
             setMensajeExito('Pedido realizado correctamente, será redirigido a su perfil en 5 segundos.');
             setTimeout(() => {
                 navigate('/perfil'); // Redirigir al perfil del usuario después de 5 segundos de haber realizado el pago

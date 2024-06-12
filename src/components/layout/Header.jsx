@@ -64,7 +64,7 @@ function Header() {
     }, []);
 
     // Calcula el total de items en el carrito para mostrar en el ícono del carrito
-    const totalItems = itemsCarrito.reduce((sum, item) => sum + item.cantidad, 0);
+    const totalItems = itemsCarrito.length;
 
     // Maneja el clic en una categoría para navegar a la página de productos con la categoría seleccionada
     const handleClickCategoria = (categoria) => {
