@@ -24,7 +24,7 @@ export default function Registro() {
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumber = /[0-9]/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]-_/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>_\-]/.test(password);
 
         if (password.length < minLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar || password.length > maxLength) {
             return 'La contraseña debe tener al menos 8 caracteres y 30 de máximo, una mayúscula, una minúscula, un número y un carácter especial.';
