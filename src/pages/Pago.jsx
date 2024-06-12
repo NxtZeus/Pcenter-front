@@ -5,48 +5,60 @@ import { Link, useNavigate } from 'react-router-dom';
 import TruncarTexto from '../components/truncarTexto/TruncarTexto';
 
 const PasarelaPago = () => {
-    const { itemsCarrito = [], setItemsCarrito } = useCarrito(); // Asegúrate de que itemsCarrito sea un array
+    // Estado del carrito de compras
+    const { itemsCarrito, setItemsCarrito } = useCarrito();
+    // Estado del usuario
     const [usuario, setUsuario] = useState({});
+    // Estado del método de pago
     const [metodoPago, setMetodoPago] = useState('tarjeta_credito');
+    // Estado del mensaje de éxito
     const [mensajeExito, setMensajeExito] = useState('');
+    // Estados de los campos de la tarjeta de crédito
     const [numeroTarjeta, setNumeroTarjeta] = useState('');
     const [fechaExpiracion, setFechaExpiracion] = useState('');
     const [codigoCVV, setCodigoCVV] = useState('');
+    // Estado para errores en la tarjeta de crédito
     const [errorTarjeta, setErrorTarjeta] = useState('');
+    // Hook de navegación para redireccionar al usuario
     const navigate = useNavigate();
+    // Estado para el ancho de la ventana
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    // Calcular el precio total del carrito
     const precioTotal = itemsCarrito.reduce((total, item) => total + parseFloat(item.producto.precio) * item.cantidad, 0);
 
+    // Efecto para obtener datos del usuario y manejar el redimensionamiento de la ventana
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const data = await obtenerUsuario(token);
-                    setUsuario(data);
+                    const data = await obtenerUsuario(token); // Obtener datos del usuario usando el token
+                    setUsuario(data); // Actualizar el estado del usuario
                 }
             } catch (error) {
                 console.error('Error al obtener los detalles del usuario:', error);
             }
         };
 
-        fetchUsuario();
+        fetchUsuario(); // Llamar a la función para obtener los datos del usuario
 
         const handleResize = () => setWindowWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize); // Añadir event listener para cambios en el tamaño de la ventana
+        return () => window.removeEventListener('resize', handleResize); // Limpiar el event listener cuando el componente se desmonte
     }, []);
 
+    // Función para manejar el pago
     const handlePago = async () => {
         if (metodoPago === 'tarjeta_credito' && !validarTarjetaCredito()) {
             setErrorTarjeta('Por favor, introduzca los datos correctos de la tarjeta.');
             return;
         }
 
+        // Validar los datos de la tarjeta de crédito
         const validarTarjetaCredito = () => {
-            const regexNumeroTarjeta = /^[0-9]{16}$/;
-            const regexFechaExpiracion = /^(0[1-9]|1[0-2])\/[0-9]{2}$/; // MM/YY
-            const regexCVV = /^[0-9]{3,4}$/;
+            const regexNumeroTarjeta = /^[0-9]{16}$/; // Regex para número de tarjeta (16 dígitos)
+            const regexFechaExpiracion = /^(0[1-9]|1[0-2])\/[0-9]{2}$/; // Regex para fecha de expiración (MM/YY)
+            const regexCVV = /^[0-9]{3,4}$/; // Regex para CVV (3-4 dígitos)
     
             return (
                 regexNumeroTarjeta.test(numeroTarjeta) &&
@@ -56,6 +68,7 @@ const PasarelaPago = () => {
         };
 
         try {
+            // Llamar a la API para procesar el pago con los datos del usuario y el carrito
             await pagar({
                 direccion_envio: direccionFormateada(usuario),
                 direccion_facturacion: direccionFormateada(usuario),
@@ -64,22 +77,24 @@ const PasarelaPago = () => {
                 fecha_expiracion: metodoPago === 'tarjeta_credito' ? fechaExpiracion : null,
                 codigo_cvv: metodoPago === 'tarjeta_credito' ? codigoCVV : null
             });
-            setItemsCarrito([]);
+            setItemsCarrito([]); // Vaciar el carrito después de un pago exitoso para el usuario actual
             setMensajeExito('Pedido realizado correctamente, será redirigido a su perfil en 5 segundos.');
             setTimeout(() => {
-                navigate('/perfil');
-            }, 5000); // Redirigir después de 5 segundos
+                navigate('/perfil'); // Redirigir al perfil del usuario después de 5 segundos de haber realizado el pago
+            }, 5000);
         } catch (error) {
             alert('Hubo un problema al procesar el pago. Inténtalo de nuevo.');
         }
     };
     
+    // Función para obtener la longitud máxima del texto a truncar según el ancho de la ventana
     const getMaxLength = (width) => {
         if (width < 1025) return 25;
         if (width < 1441) return 30;
         return 40;
     };
     
+    // Función para obtener la URL de la imagen
     const imagenUrl = (url) => {
         const baseURL = 'http://127.0.0.1:8000';
         if (!url) {
@@ -91,6 +106,7 @@ const PasarelaPago = () => {
         return `${baseURL}${url}`;
     };
     
+    // Función para formatear la dirección del usuario en un solo string
     const direccionFormateada = (usuario) => {
         if (!usuario.direccion || !usuario.ciudad || !usuario.codigo_postal || !usuario.pais) return 'No disponible';
         return `${usuario.direccion}, ${usuario.ciudad}, ${usuario.codigo_postal}, ${usuario.pais}`;
@@ -133,8 +149,7 @@ const PasarelaPago = () => {
                             onChange={(e) => setMetodoPago(e.target.value)}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-custom-azul"
                         >
-                            <option value="tarjeta_credito">Tarjeta de Crédito</option>
-                            <option value="efectivo">Efectivo</option>
+                            <option value="tarjeta_credito" selected>Tarjeta de Crédito</option>
                         </select>
                     </div>
                     {metodoPago === 'tarjeta_credito' && (

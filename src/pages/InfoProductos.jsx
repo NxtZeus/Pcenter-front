@@ -80,7 +80,7 @@ const InfoProducto = () => {
                         <div className="text-4xl font-bold">{producto.precio}€</div>
                     </div>
                     <button
-                        className="w-full bg-custom-azul px-4 py-2 rounded-md hover:bg-custom-naranja transition duration-300 mt-4 text-white"
+                        className="w-full bg-custom-naranja px-4 py-2 rounded-md hover:bg-orange-500 transition duration-300 mt-4 text-white"
                         onClick={manejarAgregarAlCarrito}
                     >
                         Añadir al carrito

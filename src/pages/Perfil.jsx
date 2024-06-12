@@ -55,7 +55,7 @@ const Perfil = () => {
     }
 
     return (
-        <div className="container mt-4 mx-auto px-4 py-8 bg-gray-200 rounded-lg shadow-lg">
+        <div className="container mb-8 mt-4 mx-auto px-4 py-8 bg-gray-200 rounded-lg shadow-lg">
             {cargando ? (
                 <p>Cargando...</p>
             ) : (

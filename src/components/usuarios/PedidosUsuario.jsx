@@ -18,7 +18,7 @@ const PedidosUsuario = ({ pedidos, setPedidos }) => {
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4 text-center">Pedidos</h2>
+            <h2 className="text-2xl font-bold mb-4">Pedidos</h2>
             <table className="min-w-full bg-white">
                 <thead>
                     <tr>
@@ -37,7 +37,7 @@ const PedidosUsuario = ({ pedidos, setPedidos }) => {
                             <td className="py-2 px-4 border-b text-center">{pedido.precio_total}</td>
                             <td className="py-2 px-4 border-b text-center">{pedido.estado_pedido}</td>
                             <td className="py-2 px-4 border-b text-center">
-                                {pedido.estado_pedido !== 'enviado' && pedido.estado_pedido !== 'entregado' && pedido.estado_pedido !== 'cancelado' && (
+                                {pedido.estado_pedido !== 'enviado' && pedido.estado_pedido !== 'entregado' && pedido.estado_pedido !== 'cancelado' && pedido.estado_pedido !== 'procesado' && (
                                     <button
                                         onClick={() => manejarCancelar(pedido.id)}
                                         className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"

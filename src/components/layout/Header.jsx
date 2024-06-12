@@ -135,7 +135,7 @@ function Header() {
                                 Iniciar Sesión
                             </Link>
                             <Link to="/registro" className="bg-white text-black px-4 py-2 z-10 rounded-md hover:bg-gray-300 transition duration-300 hidden lg:block">
-                                Registrarse
+                                Regístrate
                             </Link>
                         </>
                     )}
