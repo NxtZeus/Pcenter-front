@@ -47,25 +47,25 @@ const PasarelaPago = () => {
         return () => window.removeEventListener('resize', handleResize); // Limpiar el event listener cuando el componente se desmonte
     }, []);
 
+    // Función para validar los datos de la tarjeta de crédito
+    const validarTarjetaCredito = () => {
+        const regexNumeroTarjeta = /^[0-9]{16}$/; // Regex para número de tarjeta (16 dígitos)
+        const regexFechaExpiracion = /^(0[1-9]|1[0-2])\/[0-9]{2}$/; // Regex para fecha de expiración (MM/YY)
+        const regexCVV = /^[0-9]{3,4}$/; // Regex para CVV (3-4 dígitos)
+
+        return (
+            regexNumeroTarjeta.test(numeroTarjeta) &&
+            regexFechaExpiracion.test(fechaExpiracion) &&
+            regexCVV.test(codigoCVV)
+        );
+    };
+
     // Función para manejar el pago
     const handlePago = async () => {
         if (metodoPago === 'tarjeta_credito' && !validarTarjetaCredito()) {
             setErrorTarjeta('Por favor, introduzca los datos correctos de la tarjeta.');
             return;
         }
-
-        // Validar los datos de la tarjeta de crédito
-        const validarTarjetaCredito = () => {
-            const regexNumeroTarjeta = /^[0-9]{16}$/; // Regex para número de tarjeta (16 dígitos)
-            const regexFechaExpiracion = /^(0[1-9]|1[0-2])\/[0-9]{2}$/; // Regex para fecha de expiración (MM/YY)
-            const regexCVV = /^[0-9]{3,4}$/; // Regex para CVV (3-4 dígitos)
-    
-            return (
-                regexNumeroTarjeta.test(numeroTarjeta) &&
-                regexFechaExpiracion.test(fechaExpiracion) &&
-                regexCVV.test(codigoCVV)
-            );
-        };
 
         try {
             // Llamar a la API para procesar el pago con los datos del usuario y el carrito
