@@ -96,14 +96,14 @@ const PasarelaPago = () => {
     
     // Función para obtener la URL de la imagen
     const imagenUrl = (url) => {
-        const baseURL = 'http://127.0.0.1:8000';
+        const baseURL = 'https://tfg-backend-production-5a6a.up.railway.app';
         if (!url) {
             return `${baseURL}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined
         }
         if (url.startsWith(baseURL)) {
             return url;
         }
-        return `${baseURL}${url}`;
+        return `${url}`;
     };
     
     // Función para formatear la dirección del usuario en un solo string
@@ -210,7 +210,7 @@ const PasarelaPago = () => {
                     </div>
                     <button 
                         onClick={handlePago} 
-                        className="bg-custom-naranja text-black px-4 py-2 rounded-md w-full hover:bg-orange-500 transition duration-300 self-end mt-6"
+                        className="bg-custom-naranja text-white px-4 py-2 rounded-md w-full hover:bg-orange-500 transition duration-300 self-end mt-6"
                     >
                         Realizar Pago
                     </button>
