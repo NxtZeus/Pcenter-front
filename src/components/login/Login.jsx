@@ -17,7 +17,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     // URL de la API de login
-    const urlLogin = 'http://127.0.0.1:8000/api/login/';
+    const urlLogin = 'https://tfg-backend-production-5a6a.up.railway.app/api/login/';
 
     // Función para manejar el inicio de sesión del usuario 
     const handleLogin = async (e) => {

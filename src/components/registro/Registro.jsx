@@ -48,7 +48,7 @@ export default function Registro() {
             return;
         }
 
-        const urlRegistro = 'http://127.0.0.1:8000/api/registro/';
+        const urlRegistro = 'https://tfg-backend-production-5a6a.up.railway.app/api/registro/';
 
         try {
             // Realizar la solicitud de registro a la API con los datos del formulario
