@@ -99,7 +99,7 @@ const PasarelaPago = () => {
 
     // Función para obtener la URL de la imagen
     const imagenUrl = (url) => {
-        const baseURL = 'http://tfg-backend-production-5a6a.up.railway.app';
+        const baseURL = 'https://tfg-backend-production-5a6a.up.railway.app';
         if (!url) {
             return `${baseURL}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined
         }
