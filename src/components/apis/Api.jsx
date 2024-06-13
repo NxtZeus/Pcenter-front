@@ -151,21 +151,28 @@ export const cancelarPedido = async (pedidoId) => {
 
         // Obtener los detalles del pedido para actualizar el stock de los productos
         const pedidoDetalles = await axios.get(`${URL_API}/pedidos/${pedidoId}/`, obtenerHeadersAuth());
-        const productos = pedidoDetalles.data.productos;
-
-        // Verificar que productos sea un array antes de iterar sobre él
-        if (Array.isArray(productos)) {
+        
+        // Verificación y manejo de productos
+        if (pedidoDetalles.data && Array.isArray(pedidoDetalles.data.productos)) {
+            const productos = pedidoDetalles.data.productos;
+            
+            // Actualizar el stock de cada producto
             for (const producto of productos) {
-                await axios.patch(`${URL_API}/productos/${producto.id}/`, {
-                    stock: producto.stock + producto.cantidad
-                }, obtenerHeadersAuth());
+                if (producto && producto.id && typeof producto.stock === 'number' && typeof producto.cantidad === 'number') {
+                    await axios.patch(`${URL_API}/productos/${producto.id}/`, {
+                        stock: producto.stock + producto.cantidad
+                    }, obtenerHeadersAuth());
+                } else {
+                    console.error('Producto inválido:', producto);
+                }
             }
         } else {
-            console.error('Error: productos no es un array', productos);
+            console.error('Error: productos no es un array', pedidoDetalles.data);
         }
 
         return respuesta.data;
     } catch (error) {
+        console.error('Error al cancelar el pedido:', error);
         throw error;
     }
 };
