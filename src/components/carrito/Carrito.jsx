@@ -21,7 +21,7 @@ const Carrito = ({ onCerrar, onEliminarItem, onIncrementarItem, onDecrementarIte
 
     // Obtener la URL de la imagen del producto o una imagen por defecto si no hay URL o es null o undefined
     const obtenerUrlImagen = (url) => {
-        const URLbase = 'https://tfg-backend-production-5a6a.up.railway.app';
+        const URLbase = 'http://tfg-backend-production-5a6a.up.railway.app';
         if (!url) {
             return `${URLbase}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined o null
         }
