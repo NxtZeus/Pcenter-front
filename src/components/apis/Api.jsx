@@ -147,27 +147,23 @@ export const obtenerPedidos = async () => {
 // Función para cancelar un pedido del usuario autenticado
 export const cancelarPedido = async (pedidoId) => {
     try {
+        // Cancelar el pedido en la base de datos del servidor y obtener los detalles del pedido
         const respuesta = await axios.patch(`${URL_API}/pedidos/${pedidoId}/`, { estado_pedido: 'cancelado' }, obtenerHeadersAuth());
-
-        // Obtener los detalles del pedido para actualizar el stock de los productos
-        const pedidoDetalles = await axios.get(`${URL_API}/pedidos/${pedidoId}/`, obtenerHeadersAuth());
-        
+        const pedidoDetalles = respuesta.data; 
         // Verificación y manejo de productos
-        if (pedidoDetalles.data && Array.isArray(pedidoDetalles.data.productos)) {
-            const productos = pedidoDetalles.data.productos;
-            
-            // Actualizar el stock de cada producto
-            for (const producto of productos) {
-                if (producto && producto.id && typeof producto.stock === 'number' && typeof producto.cantidad === 'number') {
-                    await axios.patch(`${URL_API}/productos/${producto.id}/`, {
-                        stock: producto.stock + producto.cantidad
-                    }, obtenerHeadersAuth());
-                } else {
-                    console.error('Producto inválido:', producto);
-                }
+        if (pedidoDetalles && Array.isArray(pedidoDetalles.detalles_pedido_set)) {
+            const detallesPedidos = pedidoDetalles.detalles_pedido_set;
+            // Actualizar el stock de cada producto en el pedido cancelado
+            for (const detallePedido of detallesPedidos) {
+                const productoId = detallePedido.producto.id;
+                const cantidad = detallePedido.cantidad;
+
+                await axios.patch(`${URL_API}/productos/${productoId}/`, { 
+                    stock: detallePedido.producto.stock + cantidad 
+                }, obtenerHeadersAuth());
             }
         } else {
-            console.error('Error: productos no es un array', pedidoDetalles.data);
+            console.error('Error: detalles_pedido_set no es un array', pedidoDetalles);
         }
 
         return respuesta.data;
