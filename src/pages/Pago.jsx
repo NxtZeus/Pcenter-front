@@ -97,16 +97,16 @@ const PasarelaPago = () => {
         return 40;
     };
 
-    // Función para obtener la URL de la imagen
+    // Obtener la URL de la imagen del producto o una imagen por defecto si no hay URL o es null o undefined
     const imagenUrl = (url) => {
-        const baseURL = 'https://tfg-backend-production-5a6a.up.railway.app';
+        const URLbase = 'http://tfg-backend-production-5a6a.up.railway.app';
         if (!url) {
-            return `${baseURL}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined
+            return `${URLbase}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined o null
         }
-        if (url.startsWith(baseURL)) {
+        else if (url.startsWith(URLbase)) {
             return url;
         }
-        return `${url}`;
+        return `${URLbase}${url}`; // Ruta de la imagen si no es una URL completa
     };
 
     // Función para formatear la dirección del usuario en un solo string
