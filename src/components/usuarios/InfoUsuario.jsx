@@ -45,11 +45,12 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         e.preventDefault();
         const { current_password, new_password, ...updateData } = formData;
 
-        // Permite validar que los campos obligatorios no estén vacíos
         const requiredFields = ['nombre', 'apellido', 'email', 'direccion', 'ciudad', 'pais', 'codigo_postal', 'telefono'];
+        const [ errorGuardado, setErrorGuardado ] = useState('');
         for (const field of requiredFields) {
             if (!updateData[field]) {
-                alert(`El campo ${field} no puede estar vacío.`);
+                setErrorGuardado(`El campo ${field} es obligatorio.`);
+                errorGuardado
                 return;
             }
         }
