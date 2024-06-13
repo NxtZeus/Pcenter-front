@@ -25,8 +25,6 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
     const [cambiarContrasena, setCambiarContrasena] = useState(false);
     const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false);
     const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
-    const [errorGuardado, setErrorGuardado] = useState({ error: false, field: '' });
-
 
     // Maneja los cambios en los inputs del formulario de usuario y actualiza el estado del formulario con los nuevos valores ingresados por el usuario
     const handleChange = (e) => {
@@ -50,7 +48,7 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         const requiredFields = ['nombre', 'apellido', 'email', 'direccion', 'ciudad', 'pais', 'codigo_postal', 'telefono'];
         for (const field of requiredFields) {
             if (!updateData[field]) {
-                setErrorGuardado({ error: true, field });
+                alert(`El campo ${field} no puede estar vacío.`);
                 return;
             }
         }
@@ -74,7 +72,6 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         }
         await onActualizarUsuario(backendData);
         setMostrarMensajeExito(true);
-        setErrorGuardado({ error: false, field: '' });
         setTimeout(() => setMostrarMensajeExito(false), 3000);  // Mensaje de éxito desaparece después de 3 segundos
     };
 
@@ -96,11 +93,6 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
             {mostrarMensajeExito && (
                 <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                     <span className="block sm:inline">Los cambios se han guardado correctamente.</span>
-                </div>
-            )}
-            {errorGuardado && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                    <span className="block sm:inline">El campo {errorGuardado.field} es obligatorio.</span>
                 </div>
             )}
             <form onSubmit={handleSubmit}>
