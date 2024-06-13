@@ -148,6 +148,18 @@ export const obtenerPedidos = async () => {
 export const cancelarPedido = async (pedidoId) => {
     try {
         const respuesta = await axios.patch(`${URL_API}/pedidos/${pedidoId}/`, { estado_pedido: 'cancelado' }, obtenerHeadersAuth());
+
+        // Obtener los detalles del pedido para actualizar el stock de los productos
+        const pedidoDetalles = await axios.get(`${URL_API}/pedidos/${pedidoId}/`, obtenerHeadersAuth());
+        const productos = pedidoDetalles.data.productos;
+
+        // Actualizar el stock de cada producto
+        for (const producto of productos) {
+            await axios.patch(`${URL_API}/productos/${producto.id}/`, {
+                stock: producto.stock + producto.cantidad
+            }, obtenerHeadersAuth());
+        }
+
         return respuesta.data;
     } catch (error) {
         throw error;
