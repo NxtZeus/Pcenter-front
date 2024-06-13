@@ -174,7 +174,7 @@ function Header() {
                     <Link to="/productos" className="block text-white hover:text-custom-naranja text-lg transition duration-300">Productos</Link>
                     <button onClick={() => setMenuCategoriasAbierto(!menuCategoriasAbierto)} className="block text-white hover:text-custom-naranja text-lg transition duration-300">Categorías</button>
                     {esSuperusuario && (
-                        <Link to="http://127.0.0.1:8000/admin/" className="bg-red-500 text-white text-xl px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Admin</Link>
+                        <Link to="https://tfg-backend-production-5a6a.up.railway.app/admin/" className="bg-red-500 text-white text-xl px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Admin</Link>
                     )}
                     {estaLogueado ? (
                         <>
