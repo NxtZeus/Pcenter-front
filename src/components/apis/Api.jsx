@@ -149,8 +149,7 @@ export const cancelarPedido = async (pedidoId) => {
     try {
         const respuesta = await axios.patch(`${URL_API}/pedidos/${pedidoId}/cancelar/`, { estado_pedido: 'cancelado' }, obtenerHeadersAuth());        
         if (respuesta.status === 200) {
-            // Pedido cancelado y stock restaurado correctamente
-            console.log(respuesta.data.mensaje);
+            alert("Pedido cancelado correctamente");
         } else {
             // Error al cancelar el pedido
             console.error(respuesta.data.error); 
