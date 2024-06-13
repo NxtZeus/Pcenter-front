@@ -76,22 +76,15 @@ const PasarelaPago = () => {
                 numero_tarjeta: metodoPago === 'tarjeta_credito' ? numeroTarjeta : null,
                 fecha_expiracion: metodoPago === 'tarjeta_credito' ? fechaExpiracion : null,
                 codigo_cvv: metodoPago === 'tarjeta_credito' ? codigoCVV : null,
-                itemsCarrito // Incluimos los items del carrito en la petición de pago
+                itemsCarrito
             });
+            setItemsCarrito([]);
+            setErrorTarjeta(null);
+            setMensajeExito('Pedido realizado correctamente, será redirigido a su perfil en 5 segundos.');
 
-            // Verificar si el pago fue exitoso
-            if (respuestaPago.success) {
-                setItemsCarrito([]);
-                setErrorTarjeta(null);
-                setMensajeExito('Pedido realizado correctamente, será redirigido a su perfil en 5 segundos.');
-
-                setTimeout(() => {
-                    navigate('/perfil');
-                }, 5000);
-            } else {
-                // Manejar el caso en que el pago no fue exitoso (por ejemplo, stock insuficiente)
-                alert('Error en el pago: ' + respuestaPago.message);
-            }
+            setTimeout(() => {
+                navigate('/perfil');
+            }, 5000);
         } catch (error) {
             alert('Hubo un problema al procesar el pago. Inténtalo de nuevo.');
         }
