@@ -153,11 +153,15 @@ export const cancelarPedido = async (pedidoId) => {
         const pedidoDetalles = await axios.get(`${URL_API}/pedidos/${pedidoId}/`, obtenerHeadersAuth());
         const productos = pedidoDetalles.data.productos;
 
-        // Actualizar el stock de cada producto
-        for (const producto of productos) {
-            await axios.patch(`${URL_API}/productos/${producto.id}/`, {
-                stock: producto.stock + producto.cantidad
-            }, obtenerHeadersAuth());
+        // Verificar que productos sea un array antes de iterar sobre él
+        if (Array.isArray(productos)) {
+            for (const producto of productos) {
+                await axios.patch(`${URL_API}/productos/${producto.id}/`, {
+                    stock: producto.stock + producto.cantidad
+                }, obtenerHeadersAuth());
+            }
+        } else {
+            console.error('Error: productos no es un array', productos);
         }
 
         return respuesta.data;
