@@ -76,7 +76,13 @@ export default function Registro() {
                 setError(response.data.detail || 'Error al registrar usuario');
             }
         } catch (err) {
-            setError(err.response?.data?.detail || 'Error de conexión con el servidor');
+            // Manejar errores de conexión con el servidor o errores en los datos del formulario, como un email ya registrado
+            if (err.response?.data?.email) {
+                setError('El email ya está registrado');
+            }
+            else {
+                setError(err.response?.data?.detail || 'Error de conexión con el servidor');
+            }
         }
     };
 
