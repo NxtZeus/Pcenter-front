@@ -100,7 +100,7 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
             )}
             {errorGuardado && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                    <span className="block sm:inline">El campo {field} es obligatorio.</span>
+                    <span className="block sm:inline">El campo {errorGuardado.field} es obligatorio.</span>
                 </div>
             )}
             <form onSubmit={handleSubmit}>
