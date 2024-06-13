@@ -22,10 +22,13 @@ const Carrito = ({ onCerrar, onEliminarItem, onIncrementarItem, onDecrementarIte
     // Obtener la URL de la imagen del producto o una imagen por defecto si no hay URL o es null o undefined
     const obtenerUrlImagen = (url) => {
         const URLbase = 'https://tfg-backend-production-5a6a.up.railway.app';
+        if (!url) {
+            return `${URLbase}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined o null
+        }
         if (url.startsWith(URLbase)) {
             return url;
         }
-        return `${URLbase}${url}`;
+        return `${url}`;
     };
 
     // Obtener la longitud máxima del texto según el ancho de la ventana para truncar el texto si es necesario en el carrito de compras
@@ -46,7 +49,11 @@ const Carrito = ({ onCerrar, onEliminarItem, onIncrementarItem, onDecrementarIte
                 {items.map(item => (
                     <li key={item.id} className="flex justify-between items-center px-4 py-2 hover:bg-gray-100">
                         <div className="flex items-center space-x-2 flex-1">
-                            <img src={obtenerUrlImagen(item.producto.imagenes[0]?.imagen)} alt={item.producto.nombre_producto} className="w-12 h-12 object-cover rounded-md" />
+                        <img
+                          alt={producto.nombre}
+                          src={item.producto.imagenes[0]?.imagen.startsWith("http") ? img : `https://tfg-backend-production-5a6a.up.railway.app${img}`}
+                          className="object-cover transition duration-500 group-hover:scale-105 sm:h-72"
+                        />
                             <div className="flex-1">
                                 <p className="whitespace-normal md:whitespace-nowrap">
                                     <TextoTruncado text={item.producto.nombre_producto} maxLength={obtenerMaxLongitud(anchoVentana)} />
