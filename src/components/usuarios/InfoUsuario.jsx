@@ -25,7 +25,7 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
     const [cambiarContrasena, setCambiarContrasena] = useState(false);
     const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false);
     const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
-    const [ errorGuardado, setErrorGuardado ] = useState(false);
+    const [errorGuardado, setErrorGuardado] = useState({ error: false, field: '' });
 
 
     // Maneja los cambios en los inputs del formulario de usuario y actualiza el estado del formulario con los nuevos valores ingresados por el usuario
@@ -50,7 +50,7 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         const requiredFields = ['nombre', 'apellido', 'email', 'direccion', 'ciudad', 'pais', 'codigo_postal', 'telefono'];
         for (const field of requiredFields) {
             if (!updateData[field]) {
-                setErrorGuardado(true);
+                setErrorGuardado({ error: true, field });
                 return;
             }
         }
@@ -74,6 +74,7 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         }
         await onActualizarUsuario(backendData);
         setMostrarMensajeExito(true);
+        setErrorGuardado({ error: false, field: '' });
         setTimeout(() => setMostrarMensajeExito(false), 3000);  // Mensaje de éxito desaparece después de 3 segundos
     };
 
