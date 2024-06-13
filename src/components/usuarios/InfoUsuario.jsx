@@ -72,7 +72,7 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         }
         await onActualizarUsuario(backendData);
         setMostrarMensajeExito(true);
-        setTimeout(() => setMostrarMensajeExito(false), 3000);  // Mensaje de éxito desaparece después de 3 segundos
+        setTimeout(() => setMostrarMensajeExito(false), 4000);  // Mensaje de éxito desaparece después de 4 segundos
     };
 
     // Maneja la eliminación de la cuenta del usuario

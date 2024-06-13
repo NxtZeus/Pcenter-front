@@ -17,7 +17,7 @@ const PedidosUsuario = ({ pedidos, setPedidos }) => {
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">Pedidos</h2>
+            <h2 className="text-2xl font-bold mb-4">Historial de Pedidos</h2>
             <table className="min-w-full bg-white">
                 <thead>
                     <tr>
