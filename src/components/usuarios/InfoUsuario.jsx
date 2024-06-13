@@ -25,6 +25,8 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
     const [cambiarContrasena, setCambiarContrasena] = useState(false);
     const [mostrarMensajeExito, setMostrarMensajeExito] = useState(false);
     const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
+    const [ errorGuardado, setErrorGuardado ] = useState(false);
+
 
     // Maneja los cambios en los inputs del formulario de usuario y actualiza el estado del formulario con los nuevos valores ingresados por el usuario
     const handleChange = (e) => {
@@ -46,11 +48,9 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
         const { current_password, new_password, ...updateData } = formData;
 
         const requiredFields = ['nombre', 'apellido', 'email', 'direccion', 'ciudad', 'pais', 'codigo_postal', 'telefono'];
-        const [ errorGuardado, setErrorGuardado ] = useState('');
         for (const field of requiredFields) {
             if (!updateData[field]) {
-                setErrorGuardado(`El campo ${field} es obligatorio.`);
-                errorGuardado
+                setErrorGuardado(true);
                 return;
             }
         }
@@ -95,6 +95,11 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
             {mostrarMensajeExito && (
                 <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                     <span className="block sm:inline">Los cambios se han guardado correctamente.</span>
+                </div>
+            )}
+            {errorGuardado && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                    <span className="block sm:inline">El campo {field} es obligatorio.</span>
                 </div>
             )}
             <form onSubmit={handleSubmit}>
