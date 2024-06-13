@@ -69,32 +69,41 @@ const PasarelaPago = () => {
 
         try {
             // Llamar a la API para procesar el pago con los datos del usuario y el carrito
-            await pagar({
+            const respuestaPago = await pagar({
                 direccion_envio: direccionFormateada(usuario),
                 direccion_facturacion: direccionFormateada(usuario),
                 metodo_pago: metodoPago,
                 numero_tarjeta: metodoPago === 'tarjeta_credito' ? numeroTarjeta : null,
                 fecha_expiracion: metodoPago === 'tarjeta_credito' ? fechaExpiracion : null,
-                codigo_cvv: metodoPago === 'tarjeta_credito' ? codigoCVV : null
+                codigo_cvv: metodoPago === 'tarjeta_credito' ? codigoCVV : null,
+                itemsCarrito // Incluimos los items del carrito en la petición de pago
             });
-            setItemsCarrito([]); // Vaciar el carrito después de un pago exitoso para el usuario actual
-            setErrorTarjeta(null);
-            setMensajeExito('Pedido realizado correctamente, será redirigido a su perfil en 5 segundos.');
-            setTimeout(() => {
-                navigate('/perfil'); // Redirigir al perfil del usuario después de 5 segundos de haber realizado el pago
-            }, 5000);
+
+            // Verificar si el pago fue exitoso
+            if (respuestaPago.success) {
+                setItemsCarrito([]);
+                setErrorTarjeta(null);
+                setMensajeExito('Pedido realizado correctamente, será redirigido a su perfil en 5 segundos.');
+
+                setTimeout(() => {
+                    navigate('/perfil');
+                }, 5000);
+            } else {
+                // Manejar el caso en que el pago no fue exitoso (por ejemplo, stock insuficiente)
+                alert('Error en el pago: ' + respuestaPago.message);
+            }
         } catch (error) {
             alert('Hubo un problema al procesar el pago. Inténtalo de nuevo.');
         }
     };
-    
+
     // Función para obtener la longitud máxima del texto a truncar según el ancho de la ventana
     const getMaxLength = (width) => {
         if (width < 1025) return 25;
         if (width < 1441) return 30;
         return 40;
     };
-    
+
     // Función para obtener la URL de la imagen
     const imagenUrl = (url) => {
         const baseURL = 'https://tfg-backend-production-5a6a.up.railway.app';
@@ -106,7 +115,7 @@ const PasarelaPago = () => {
         }
         return `${url}`;
     };
-    
+
     // Función para formatear la dirección del usuario en un solo string
     const direccionFormateada = (usuario) => {
         if (!usuario.direccion || !usuario.ciudad || !usuario.codigo_postal || !usuario.pais) return 'No disponible';
@@ -187,7 +196,7 @@ const PasarelaPago = () => {
                             )}
                         </div>
                     )}
-                    
+
                 </div>
                 <div className="w-full md:w-1/2 pl-0 md:pl-4">
                     <h2 className="text-3xl font-bold mb-6 text-custom-azul">Resumen del Carrito</h2>
@@ -209,8 +218,8 @@ const PasarelaPago = () => {
                     <div className="mt-6 text-right">
                         <p className="text-xl font-semibold">Total: {precioTotal.toFixed(2)}€</p>
                     </div>
-                    <button 
-                        onClick={handlePago} 
+                    <button
+                        onClick={handlePago}
                         className="bg-custom-naranja text-white px-4 py-2 rounded-md w-full hover:bg-orange-500 transition duration-300 self-end mt-6"
                     >
                         Realizar Pago
