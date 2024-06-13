@@ -44,6 +44,16 @@ const InfoUsuario = ({ usuario, onActualizarUsuario }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { current_password, new_password, ...updateData } = formData;
+
+        // Permite validar que los campos obligatorios no estén vacíos
+        const requiredFields = ['nombre', 'apellido', 'email', 'direccion', 'ciudad', 'pais', 'codigo_postal', 'telefono'];
+        for (const field of requiredFields) {
+            if (!updateData[field]) {
+                alert(`El campo ${field} no puede estar vacío.`);
+                return;
+            }
+        }
+
         if (cambiarContrasena && current_password && new_password) {
             updateData.password = new_password;
         }

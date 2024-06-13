@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Registro() {
     // Estados para manejar los valores del formulario y los mensajes de error y éxito al registrarse
@@ -16,6 +16,7 @@ export default function Registro() {
     const [pais, setPais] = useState('');
     const [codigoPostal, setCodigoPostal] = useState('');
     const [telefono, setTelefono] = useState('');
+    const navigate = useNavigate();
 
     // Función para validar la contraseña del usuario al registrarse
     const validatePassword = (password) => {
@@ -70,7 +71,7 @@ export default function Registro() {
                 setSuccessMessage('¡Registro exitoso!');
                 setTimeout(() => {
                     setSuccessMessage(null);
-                    Navigate('/login'); // Redirigir al usuario a la página de inicio de sesión después de registrarse con éxito
+                    navigate('/login'); // Redirigir al usuario a la página de inicio de sesión después de registrarse con éxito
                 }, 3000);
             } else {
                 setError(response.data.detail || 'Error al registrar usuario');
@@ -106,7 +107,6 @@ export default function Registro() {
                                 id="nombre"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
-                                maxLength={30}
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                                 required
@@ -118,7 +118,6 @@ export default function Registro() {
                                 id="apellidos"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
-                                maxLength={80}
                                 value={apellidos}
                                 onChange={(e) => setApellidos(e.target.value)}
                                 required
@@ -130,7 +129,6 @@ export default function Registro() {
                                 id="direccion"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
-                                maxLength={150}
                                 value={direccion}
                                 onChange={(e) => setDireccion(e.target.value)}
                                 required
@@ -142,7 +140,6 @@ export default function Registro() {
                                 id="ciudad"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
-                                maxLength={60}
                                 value={ciudad}
                                 onChange={(e) => setCiudad(e.target.value)}
                                 required
@@ -154,7 +151,6 @@ export default function Registro() {
                                 id="pais"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
-                                maxLength={60}
                                 value={pais}
                                 onChange={(e) => setPais(e.target.value)}
                                 required
@@ -166,8 +162,6 @@ export default function Registro() {
                                 id="codigoPostal"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
-                                pattern="^\d{5}$"
-                                title="Código Postal inválido. Debe contener 5 dígitos."
                                 value={codigoPostal}
                                 onChange={(e) => setCodigoPostal(e.target.value)}
                                 required
@@ -179,8 +173,6 @@ export default function Registro() {
                                 id="telefono"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
-                                pattern="^[679]\d{8}$"
-                                title="Número de teléfono inválido."
                                 value={telefono}
                                 onChange={(e) => setTelefono(e.target.value)}
                                 required
@@ -192,8 +184,6 @@ export default function Registro() {
                                 id="email"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="email"
-                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                                title="Email inválido."
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required

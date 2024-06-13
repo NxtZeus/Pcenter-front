@@ -39,7 +39,7 @@ const PedidosUsuario = ({ pedidos, setPedidos }) => {
                                 {pedido.estado_pedido !== 'enviado' && pedido.estado_pedido !== 'entregado' && pedido.estado_pedido !== 'cancelado' && pedido.estado_pedido !== 'procesado' && (
                                     <button
                                         onClick={() => manejarCancelar(pedido.id)}
-                                        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
+                                        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
                                     >
                                         Cancelar
                                     </button>
