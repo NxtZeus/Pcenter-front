@@ -34,7 +34,7 @@ const PedidosUsuario = ({ pedidos, setPedidos }) => {
                             <td className="py-2 px-4 border-b text-center">{pedido.id}</td>
                             <td className="py-2 px-4 border-b text-center">
                                 {/* Mapear los detalles de los productos para traer el nombre y el precio de cada uno con la cantidad */}
-                                {pedido.detalles && Array.isArray(pedido.detalles) ? (
+                                {pedido.detalles && Array.isArray(pedido.detalles) > 0 ? (
                                     pedido.detalles.map((detalle) => (
                                         <div key={detalle.id}>
                                             <p>{detalle.producto.nombre_producto}</p>
