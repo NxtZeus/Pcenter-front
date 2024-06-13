@@ -69,7 +69,7 @@ const PasarelaPago = () => {
 
         try {
             // Llamar a la API para procesar el pago con los datos del usuario y el carrito
-            const respuestaPago = await pagar({
+            await pagar({
                 direccion_envio: direccionFormateada(usuario),
                 direccion_facturacion: direccionFormateada(usuario),
                 metodo_pago: metodoPago,
@@ -99,7 +99,7 @@ const PasarelaPago = () => {
 
     // Función para obtener la URL de la imagen
     const imagenUrl = (url) => {
-        const baseURL = 'https://tfg-backend-production-5a6a.up.railway.app';
+        const baseURL = 'http://tfg-backend-production-5a6a.up.railway.app';
         if (!url) {
             return `${baseURL}/default-image.jpg`; // Ruta de una imagen por defecto si url es undefined
         }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { cancelarPedido } from '../apis/Api';
 
 const PedidosUsuario = ({ pedidos, setPedidos }) => {
@@ -33,6 +32,15 @@ const PedidosUsuario = ({ pedidos, setPedidos }) => {
                     {pedidos.map((pedido) => (
                         <tr key={pedido.id}>
                             <td className="py-2 px-4 border-b text-center">{pedido.id}</td>
+                            <td className="py-2 px-4 border-b text-center">
+                                {/* Mapear los detalles de los productos para traer el nombre y el precio de cada uno con la cantidad */}
+                                {pedido.detalles.map((detalle) => (
+                                    <div key={detalle.id}>
+                                        <p>{detalle.producto.nombre_producto}</p>
+                                        <p>{detalle.precio_unidad}€ x {detalle.cantidad}</p>
+                                    </div>
+                                ))}
+                            </td>
                             <td className="py-2 px-4 border-b text-center">{pedido.fecha_pedido}</td>
                             <td className="py-2 px-4 border-b text-center">{pedido.precio_total}</td>
                             <td className="py-2 px-4 border-b text-center">{pedido.estado_pedido}</td>
