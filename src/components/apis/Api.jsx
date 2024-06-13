@@ -147,29 +147,16 @@ export const obtenerPedidos = async () => {
 // Función para cancelar un pedido del usuario autenticado
 export const cancelarPedido = async (pedidoId) => {
     try {
-        // Cancelar el pedido en la base de datos del servidor y obtener los detalles del pedido
-        const respuesta = await axios.patch(`${URL_API}/pedidos/${pedidoId}/`, { estado_pedido: 'cancelado' }, obtenerHeadersAuth());
-        const pedidoDetalles = respuesta.data; 
-        // Verificación y manejo de productos
-        if (pedidoDetalles && Array.isArray(pedidoDetalles.detalles_pedido_set)) {
-            const detallesPedidos = pedidoDetalles.detalles_pedido_set;
-            // Actualizar el stock de cada producto en el pedido cancelado
-            for (const detallePedido of detallesPedidos) {
-                const productoId = detallePedido.producto.id;
-                const cantidad = detallePedido.cantidad;
-
-                await axios.patch(`${URL_API}/productos/${productoId}/`, { 
-                    stock: detallePedido.producto.stock + cantidad 
-                }, obtenerHeadersAuth());
-            }
+        const respuesta = await axios.patch(`${URL_API}/pedidos/${pedidoId}/cancelar/`, { estado_pedido: 'cancelado' }, obtenerHeadersAuth());        
+        if (respuesta.status === 200) {
+            // Pedido cancelado y stock restaurado correctamente
+            console.log(respuesta.data.mensaje);
         } else {
-            console.error('Error: detalles_pedido_set no es un array', pedidoDetalles);
+            // Error al cancelar el pedido
+            console.error(respuesta.data.error); 
         }
-
-        return respuesta.data;
     } catch (error) {
-        console.error('Error al cancelar el pedido:', error);
-        throw error;
+        console.error("Error en la solicitud:", error);
     }
 };
 
