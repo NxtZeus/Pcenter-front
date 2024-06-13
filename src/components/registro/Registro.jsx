@@ -106,6 +106,7 @@ export default function Registro() {
                                 id="nombre"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
+                                maxLength={30}
                                 value={nombre}
                                 onChange={(e) => setNombre(e.target.value)}
                                 required
@@ -117,6 +118,7 @@ export default function Registro() {
                                 id="apellidos"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
+                                maxLength={80}
                                 value={apellidos}
                                 onChange={(e) => setApellidos(e.target.value)}
                                 required
@@ -128,6 +130,7 @@ export default function Registro() {
                                 id="direccion"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
+                                maxLength={150}
                                 value={direccion}
                                 onChange={(e) => setDireccion(e.target.value)}
                                 required
@@ -139,6 +142,7 @@ export default function Registro() {
                                 id="ciudad"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
+                                maxLength={60}
                                 value={ciudad}
                                 onChange={(e) => setCiudad(e.target.value)}
                                 required
@@ -150,6 +154,7 @@ export default function Registro() {
                                 id="pais"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
+                                maxLength={60}
                                 value={pais}
                                 onChange={(e) => setPais(e.target.value)}
                                 required
@@ -161,6 +166,8 @@ export default function Registro() {
                                 id="codigoPostal"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
+                                pattern="^\d{5}$"
+                                title="Código Postal inválido. Debe contener 5 dígitos."
                                 value={codigoPostal}
                                 onChange={(e) => setCodigoPostal(e.target.value)}
                                 required
@@ -172,6 +179,8 @@ export default function Registro() {
                                 id="telefono"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="text"
+                                pattern="^[679]\d{8}$"
+                                title="Número de teléfono inválido."
                                 value={telefono}
                                 onChange={(e) => setTelefono(e.target.value)}
                                 required
@@ -183,6 +192,8 @@ export default function Registro() {
                                 id="email"
                                 className="border p-3 shadow-md border-custom-azul rounded-lg w-full"
                                 type="email"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                title="Email inválido."
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
