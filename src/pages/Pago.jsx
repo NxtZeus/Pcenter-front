@@ -119,7 +119,7 @@ const PasarelaPago = () => {
         <div className="flex flex-col items-center justify-center min-h-full bg-gray-100 py-12">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-5xl flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2 pr-0 md:pr-4 mb-8 md:mb-0">
-                    <h2 className="text-3xl font-bold mb-6 text-custom-azul">Pasarela de Pago</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-custom-azul">Tramitar Pedido</h2>
 
                     {mensajeExito && (
                         <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-lg">
