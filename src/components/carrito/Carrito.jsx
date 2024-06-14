@@ -70,7 +70,7 @@ const Carrito = ({ onCerrar, onEliminarItem, onIncrementarItem, onDecrementarIte
             {items.length > 0 && (
                 <div className="px-4 py-2">
                     <p className="text-right font-semibold">Total: ${precioTotal.toFixed(2)}</p>
-                    <Link to='/pago' className="w-full bg-custom-naranja text-white px-4 py-2 rounded-md hover:bg-orange-500 transition duration-300">
+                    <Link to='/pago' onClick={onCerrar} className="w-full bg-custom-naranja text-white px-4 py-2 rounded-md hover:bg-orange-500 transition duration-300">
                         Tramitar Pedido
                     </Link>
                 </div>
