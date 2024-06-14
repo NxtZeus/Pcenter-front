@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { obtenerProductos } from '../components/apis/Api';
 import Carrousel from '../components/carrousel/Carrousel';
