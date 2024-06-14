@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { obtenerProductos } from '../components/apis/Api';
 import Carrousel from '../components/carrousel/Carrousel';
-import { AuthContext } from '../components/authContext/AuthContext';
+import { AuthContext } from '../components/auth/AuthContext';
 import { agregarItemAlCarrito } from '../components/logic/FuncCarrito';
 import { useCarrito } from '../components/carritoContext/CarritoContext';
 
