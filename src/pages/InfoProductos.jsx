@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { obtenerProductos } from '../components/apis/Api';
 import Carrousel from '../components/carrousel/Carrousel';
+import { AuthContext } from '../auth/AuthContext';
 import { agregarItemAlCarrito } from '../components/logic/FuncCarrito';
 import { useCarrito } from '../components/carritoContext/CarritoContext';
 
 const InfoProducto = () => {
+
+    // Obtiene el estado de autenticación del contexto de autenticación
+    const { estaLogueado } = useContext(AuthContext);
+    // Hook para navegar a otras páginas
+    const navigate = useNavigate();
     // Obtiene el ID del producto desde los parámetros de la URL usando el hook useParams
     const { id } = useParams();
     
@@ -40,7 +46,10 @@ const InfoProducto = () => {
 
     // Función para manejar la adición del producto al carrito y actualizar el estado del carrito en el contexto del carrito
     const manejarAgregarAlCarrito = async () => {
-        if (producto) {
+        if (!estaLogueado) {
+            navigate('/login')
+        }
+        else if (producto) {
             try {
                 await agregarItemAlCarrito(producto.id, setItemsCarrito);
                 console.log('Producto añadido al carrito');
