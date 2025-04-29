@@ -2,7 +2,7 @@ import { obtenerCarrito, actualizarItemCarrito, eliminarItemCarrito } from '../a
 import axios from 'axios';
 
 // URL base de la API
-const URL_API = 'https://tfg-backend-production-5a6a.up.railway.app/api/';
+const URL_API = 'https://pcenter-back-production.up.railway.app/api/';
 
 // Función para obtener los encabezados de autenticación usando el token almacenado en localStorage
 const obtenerHeadersAuth = () => {
