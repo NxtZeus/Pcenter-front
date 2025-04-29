@@ -11,7 +11,7 @@ function Logout() {
     const { logout } = useContext(AuthContext);
 
     // URL de la API de logout
-    const urlLogout = 'https://tfg-backend-production-5a6a.up.railway.app/api/logout/';
+    const urlLogout = 'https://pcenter-back-production.up.railway.app/api/logout/';
 
     // Función para manejar el cierre de sesión del usuario
     const handleLogout = async () => {
