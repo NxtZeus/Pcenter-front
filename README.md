@@ -20,7 +20,6 @@ Este es el frontend del proyecto PCenter, una aplicación de comercio electróni
 - React Router DOM 6.23.1
 - Axios 1.7.2
 - React Icons 5.2.1
-- LocalForage 1.10.0
 
 ## 📋 Requisitos Previos
 
@@ -74,12 +73,8 @@ tfg-frontend/
 
 El proyecto utiliza Tailwind CSS para los estilos. Los colores y temas personalizados están definidos en `tailwind.config.js`.
 
-## 🔐 Autenticación
-
-La aplicación utiliza tokens JWT para la autenticación. Los tokens se almacenan en LocalForage para persistencia.
-
 ## 📦 Despliegue
 
-El proyecto está configurado para desplegarse en Vercel. https://pcenter.vercel.app/
+El proyecto está desplegado en Vercel. https://pcenter.vercel.app/
 
 ## Link del Backend: https://github.com/NxtZeus/Pcenter-back
